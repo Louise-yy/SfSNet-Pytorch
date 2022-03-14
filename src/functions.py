@@ -22,11 +22,11 @@ def create_shading_recon(n_out2, al_out2, light_out):
     HS1g = np.matmul(HN1, light_out[9:18])
     HS1b = np.matmul(HN1, light_out[18:27])
 
-    HS1 = np.zeros(shape=(M, M, 3), dtype=np.float32)
+    HS1 = np.zeros(shape=(M, M, 3), dtype=np.float32)  # HS1 is shading
     HS1[:, :, 0] = np.reshape(HS1r, (M, M))
     HS1[:, :, 1] = np.reshape(HS1g, (M, M))
     HS1[:, :, 2] = np.reshape(HS1b, (M, M))
-    Tex1 = np.reshape(tex1, (M, M, 3)) * HS1
+    Tex1 = np.reshape(tex1, (M, M, 3)) * HS1  # Irec
 
     IRen0 = Tex1
     Shd = (200 / 255.0) * HS1  # 200 is added instead of 255 so that not to scale the shading to all white
@@ -46,7 +46,7 @@ def lambertian_attenuation(n):
 
 def normal_harmonics(N, att):
     """
-    Return the harmonics evaluated at surface normals N, attenuated by att.
+    Return the harmonics evaluated at surface normals N, attenuated by att.  返回表面法线N处的谐波值，以att衰减。
     :param N:
     :param att:
     :return:
@@ -162,4 +162,3 @@ def inpolygon(xq, yq, xv, yv):
     # get the points on path
     _on = _in ^ _in_on
     return _in_on, _on
-
