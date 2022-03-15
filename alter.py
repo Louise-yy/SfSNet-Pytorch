@@ -35,6 +35,7 @@ def change_albedo():
                     dst[i, j][c] = 0
     cv2.imshow("Albedo change", dst)
     cv2.waitKey(0)
+    return dst
 
 
 def change_albedo2():

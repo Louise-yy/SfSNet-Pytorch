@@ -1,43 +1,33 @@
-from tkinter import *
-from tkinter import filedialog, ttk
-from PIL import Image, ImageTk
-
-if __name__ == "__main__":
-    win = Tk()
-    win.title('image processing')
-    # win.resizable(0, 0)
-    win.geometry('600x400+100+100')
+import sys
+from PyQt5.QtCore import *
+from PyQt5.QtWidgets import *
+from PyQt5 import QtGui
+from Interaction import Ui_Form
+from PIL import Image
+from alter import change_albedo
 
 
+class Gui(QWidget, Ui_Form):
+    def __init__(self):
+        super(Gui, self).__init__()
+        self.setupUi(self)
 
-    # setting up a tkinter canvas with scrollbars
-    frame = Frame(win, bd=2, relief=FLAT)
-    frame.grid_rowconfigure(0, weight=1)
-    frame.grid_columnconfigure(0, weight=1)
-    # xscroll = Scrollbar(frame, orient=HORIZONTAL)
-    # xscroll.grid(row=1, column=0, sticky=E + W)
-    # yscroll = Scrollbar(frame)
-    # yscroll.grid(row=0, column=1, sticky=N + S)
-    # canvas = Canvas(frame, bd=0, xscrollcommand=xscroll.set, yscrollcommand=yscroll.set)
-    tx_note = Label(frame, text="please choose the image that need to be processed:")
-    tx_note.grid(row=0, column=0)
-    canvas = Canvas(frame, bd=0)
-    canvas.grid(row=1, column=0, sticky=N + S + E + W)
-    # xscroll.config(command=canvas.xview)
-    # yscroll.config(command=canvas.yview)
+    def getImage_click(self):
+        # Open the file(*.jpg *.gif *.png *.jpeg) from D:\AoriginallyD\Cardiff-year3\final_project\SfSNet-Pytorch\Images
+        imgName, imgType = QFileDialog.getOpenFileName(self, 'Open file', 'D:\AoriginallyD\Cardiff-year3\final_project\SfSNet-Pytorch\Images',
+                                                       'Image files (*.jpg *.gif *.png *.jpeg)')
+        image = QtGui.QPixmap(imgName)
+        # Show the image on the label
+        self.L_ShowPic.setPixmap(image)
+
+    def sharpening_click(self):
+        image = QtGui.QPixmap(change_albedo())
+        self.L_ShowAfter.setPixmap(image)
 
 
 
-    # function to be called when mouse is clicked
-    def printcoords():
-        File = filedialog.askopenfilename(parent=win, initialdir="D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images", title='Choose an image.')
-        filename = ImageTk.PhotoImage(Image.open(File))
-        canvas.image = filename  # <--- keep reference of your image
-        canvas.create_image(0, 0, anchor='nw', image=filename)
-
-    Button(frame, text='choose', command=printcoords).grid(row=0, column=1)
-    frame.pack(fill=BOTH, expand=1)
-
-    Button(win, text='sharpening').pack()
-
-    win.mainloop()
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    interface = Gui()
+    interface.show()
+    sys.exit(app.exec_())
