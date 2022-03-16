@@ -6,7 +6,8 @@ from PIL import ImageStat
 from skimage import data, exposure, img_as_float
 
 from src.functions import lambertian_attenuation, normal_harmonics, create_shading_recon
-from SfSNet_test import _decomposition
+from SfSNet_test import _decomposition,_test
+from src.utils import convert
 
 if __name__ == '__main__':
     pass
@@ -38,23 +39,28 @@ def change_albedo():
     return dst
 
 
-def change_albedo2():
-    albedo = cv2.imread('data/Albedo.png', cv2.IMREAD_UNCHANGED)
-    h, w = albedo.shape[0:2]
-    neww = 300
-    newh = int(neww * (h / w))
-    al_out2 = cv2.resize(albedo, (neww, newh))
-    cv2.imshow("Albedo", al_out2)
+def albedo_highlight(img_path):  # 高光/对比度
+    # albedo = cv2.imread('D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/data/Albedo.png', cv2.IMREAD_UNCHANGED)
+    # img = cv2.imread(img_add, cv2.IMREAD_UNCHANGED)
+    n_out2, al_out2, light_out, al_out3, n_out3 = _test(img_path)
+    albedo = convert(al_out3)
+    # h, w = albedo.shape[0:2]
+    # neww = 300
+    # newh = int(neww * (h / w))
+    # al_out2 = cv2.resize(albedo, (neww, newh))
+    # cv2.imshow("Albedo", albedo)
 
     c = 1.25  # 1.2
-    b = 5  # 100
+    b = 1  # 100
     h, w, ch = albedo.shape  # 初始化一张黑图
     blank = np.zeros([h, w, ch], albedo.dtype)
     # 图像混合，c, 1-c为这两张图片的权重
     dst = cv2.addWeighted(albedo, c, blank, 1 - c, b)
-    dst = cv2.resize(dst, (neww, newh))
-    cv2.imshow("Albedo change", dst)
-    cv2.waitKey(0)
+    # dst = cv2.resize(dst, (neww, newh))
+    cv2.imwrite('data/highlight.png', dst)
+    # cv2.imshow("Albedo change", dst)
+    # cv2.waitKey(0)
+    return dst
 
 
 def synthetic():
@@ -119,6 +125,6 @@ def synthetic2():
 
 if __name__ == '__main__':
     # change_albedo()
-    # change_albedo2()
+    albedo_highlight("D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/4.png_face.png")
     # synthetic()
-    synthetic2()
+    # synthetic2()

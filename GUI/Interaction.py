@@ -65,7 +65,7 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.B_sharpening.setText(_translate("Form", "Sharpening"))
+        self.B_sharpening.setText(_translate("Form", "Highlight"))
         self.L_note1.setText(_translate("Form", "please choose the image that need to be processed:"))
         self.B_select.setText(_translate("Form", "Select"))
         self.label.setText(_translate("Form", "The image after sharpening:"))

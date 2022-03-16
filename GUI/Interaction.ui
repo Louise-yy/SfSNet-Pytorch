@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Sharpening</string>
+    <string>Highlight</string>
    </property>
   </widget>
   <widget class="QFrame" name="F_ShowBefore">
