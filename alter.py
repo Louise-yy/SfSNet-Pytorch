@@ -3,7 +3,7 @@ import numpy as np
 import copy
 import random
 from PIL import ImageStat
-from skimage import data, exposure, img_as_float
+from skimage import data, exposure, img_as_float,filters
 
 from src.functions import lambertian_attenuation, normal_harmonics, create_shading_recon
 from SfSNet_test import _decomposition,_test
@@ -40,8 +40,8 @@ def change_albedo():
 
 
 def albedo_highlight(img_path):  # 高光/对比度
-    # albedo = cv2.imread('D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/data/Albedo.png', cv2.IMREAD_UNCHANGED)
-    # img = cv2.imread(img_add, cv2.IMREAD_UNCHANGED)
+    # albedo = cv2.imread('D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/data/Albedo.png',
+    # cv2.IMREAD_UNCHANGED) img = cv2.imread(img_add, cv2.IMREAD_UNCHANGED)
     n_out2, al_out2, light_out, al_out3, n_out3 = _test(img_path)
     albedo = convert(al_out3)
     # h, w = albedo.shape[0:2]
@@ -61,6 +61,31 @@ def albedo_highlight(img_path):  # 高光/对比度
     # cv2.imshow("Albedo change", dst)
     # cv2.waitKey(0)
     return dst
+
+
+def albedo_bilateral(img_path):
+    img = cv2.imread(img_path)
+    bilateral_filter_img = cv2.bilateralFilter(img, 9, 75, 75)
+    cv2.imshow("b", bilateral_filter_img)
+    cv2.waitKey(0)
+
+
+def albedo_mean(img_path):
+    img = cv2.imread(img_path)
+    input_image_cp = np.copy(img)  # 输入图像的副本
+    filter_template = np.ones((3, 3))  # 空间滤波器模板
+    pad_num = int((3 - 1) / 2)  # 输入图像需要填充的尺寸
+    input_image_cp = np.pad(input_image_cp, (pad_num, pad_num), mode="constant", constant_values=0)  # 填充输入图像
+    m, n = input_image_cp.shape  # 获取填充后的输入图像的大小
+    output_image = np.copy(input_image_cp)  # 输出图像
+    # 空间滤波
+
+    for i in range(pad_num, m - pad_num):
+        for j in range(pad_num, n - pad_num):
+            output_image[i, j] = np.sum(filter_template * input_image_cp[i - pad_num:i + pad_num + 1, j - pad_num:j + pad_num + 1]) / (3 ** 2)
+    output_image = output_image[pad_num:m - pad_num, pad_num:n - pad_num]  # 裁剪
+    cv2.imshow("m", output_image)
+    cv2.waitKey(0)
 
 
 def synthetic():
@@ -105,7 +130,6 @@ def synthetic2():
     # M = shading.shape[0]
     # Re = np.reshape(shading, (M, M, 3)) * np.reshape(albedo, (M, M, 3))
 
-
     h, w = al_out2.shape[0:2]
     neww = 300
     newh = int(neww * (h / w))
@@ -125,6 +149,8 @@ def synthetic2():
 
 if __name__ == '__main__':
     # change_albedo()
-    albedo_highlight("D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/4.png_face.png")
+    # albedo_highlight("D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/4.png_face.png")
+    # albedo_bilateral("D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/4.png_face.png")
+    albedo_mean("D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/4.png_face.png")
     # synthetic()
     # synthetic2()
