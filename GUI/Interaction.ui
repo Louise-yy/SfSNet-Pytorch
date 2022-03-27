@@ -135,9 +135,83 @@
     </property>
    </widget>
   </widget>
+  <widget class="QSlider" name="S_hightlight">
+   <property name="geometry">
+    <rect>
+     <x>840</x>
+     <y>100</y>
+     <width>160</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="minimum">
+    <number>10</number>
+   </property>
+   <property name="maximum">
+    <number>40</number>
+   </property>
+   <property name="singleStep">
+    <number>1</number>
+   </property>
+   <property name="value">
+    <number>10</number>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="B_buffing">
+   <property name="geometry">
+    <rect>
+     <x>860</x>
+     <y>130</y>
+     <width>131</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Buffing</string>
+   </property>
+  </widget>
+  <widget class="QSlider" name="S_buffing">
+   <property name="geometry">
+    <rect>
+     <x>840</x>
+     <y>190</y>
+     <width>160</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="minimum">
+    <number>10</number>
+   </property>
+   <property name="maximum">
+    <number>75</number>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>860</x>
+     <y>220</y>
+     <width>131</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Sharpening</string>
+   </property>
+  </widget>
   <zorder>F_ShowAfter</zorder>
   <zorder>F_ShowBefore</zorder>
   <zorder>B_sharpening</zorder>
+  <zorder>S_hightlight</zorder>
+  <zorder>B_buffing</zorder>
+  <zorder>S_buffing</zorder>
+  <zorder>pushButton</zorder>
  </widget>
  <resources/>
  <connections>
@@ -161,7 +235,7 @@
    <sender>B_sharpening</sender>
    <signal>clicked()</signal>
    <receiver>Form</receiver>
-   <slot>sharpening_click()</slot>
+   <slot>highlight_click()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>699</x>
@@ -173,9 +247,77 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>S_hightlight</sender>
+   <signal>sliderReleased()</signal>
+   <receiver>Form</receiver>
+   <slot>highlight_slide()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>944</x>
+     <y>109</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>948</x>
+     <y>130</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>B_buffing</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>buffing_click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>902</x>
+     <y>150</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>914</x>
+     <y>202</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>S_buffing</sender>
+   <signal>actionTriggered(int)</signal>
+   <receiver>Form</receiver>
+   <slot>buffing_slide()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>867</x>
+     <y>198</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>868</x>
+     <y>242</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>sharpening_click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>923</x>
+     <y>241</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>946</x>
+     <y>273</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>getImage_click()</slot>
+  <slot>highlight_click()</slot>
+  <slot>highlight_slide()</slot>
+  <slot>buffing_click()</slot>
+  <slot>buffing_slide()</slot>
   <slot>sharpening_click()</slot>
  </slots>
 </ui>

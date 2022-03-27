@@ -15,7 +15,7 @@ from src.utils import convert
 if __name__ == '__main__':
     pass
 
-def _decomposition():
+def _decomposition2():
     # define a SfSNet
     net = SfSNet()
     # set to eval mode
@@ -133,26 +133,31 @@ def _decomposition():
         # if cv2.waitKey(0) == 27:
         #     exit()
 
-def _test(image_path):
+def _decomposition(image_path):
     # define a SfSNet
     net = SfSNet()
     # set to eval mode
     net.eval()
     # load weights
     # net.load_weights_from_pkl('SfSNet-Caffe/weights.pkl')
-    net.load_state_dict(torch.load('data/SfSNet.pth'))
+    net.load_state_dict(torch.load(os.path.join(PROJECT_DIR, 'data/SfSNet.pth')))
     # define a mask generator
     mg = MaskGenerator(LANDMARK_PATH)
 
     # # get image list glob.glob查找符合特定规则的文件路径名 os.path.join() 函数用于路径拼接文件路径，可以传入多个参数
     # image_list = glob.glob(os.path.join(PROJECT_DIR, 'Images/*.*'))
-    #
+
     # for image_name in image_list:
 
-    # read image cv2.imread(filepath,flags)
+    # read image
     image = cv2.imread(image_path)
+
     # crop face and generate mask of face
     aligned, mask, im, landmark = mg.align(image, size=(M, M))[0]
+
+    # cv2.imshow("im", im)  #
+    # cv2.waitKey(0)  #
+
     # resize
     im = cv2.resize(im, (M, M))
     # normalize to (0, 1.0)
@@ -223,9 +228,10 @@ def _test(image_path):
     n_out3 = cv2.cvtColor(n_out2, cv2.COLOR_RGB2BGR)
     Irec = cv2.cvtColor(Irec, cv2.COLOR_RGB2BGR)
     # -------------end---------------------
-    # cv2.imshow("al_out3", al_out3)
-    # al2 = convert(al_out3)
-    # cv2.imshow("a2", al2)
+    # cv2.imshow("Normal", n_out3)
+    # cv2.imshow("Albedo", al_out3)
+    # cv2.imshow("Recon", Irec)
+    # cv2.imshow("Shading", Ishd)
     # cv2.waitKey(0)
     cv2.imwrite('data/shading.png', convert(Ishd))
     cv2.imwrite('data/Albedo.png', convert(al_out3))
@@ -237,5 +243,5 @@ if __name__ == '__main__':
     d_path = os.path.join(PROJECT_DIR, 'data')
     if not os.path.exists(d_path):
         os.mkdir(d_path)
-    # _test()
-    _decomposition()
+    _decomposition("D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/1.png_face.png")
+    # _decomposition()

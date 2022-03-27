@@ -29,7 +29,7 @@ class MaskGenerator:
         face_rects = self._detector(gray_image, 0)
         return face_rects
 
-    def align(self, image, size=(240, 240), scale=1.8, warp=True, crop=True, resize=True,
+    def align(self, image, size=(240, 240), scale=1.8, warp=False, crop=False, resize=True,
               crop_function_version=0, align_multi=False, draw_landmarks=False):
         """
         warp and crop image
@@ -39,24 +39,27 @@ class MaskGenerator:
         :type image: np.ndarray
         :param size: target size
         :param scale:
-        :param warp: warp or not
-        :param crop: crop or not
+        :param warp: warp or not 扭曲变形
+        :param crop: crop or not 裁剪
         :param resize: resize od not
         :param crop_function_version: crop function version
-        :param align_multi: whther to detect multi face
+        :param align_multi: whether to detect multi face
         :param draw_landmarks: whether draw face landmarks
         :return: mask, image and whether successfully crop image
         """
+
+        # cv2.imshow("original-image", image)  ###############
         # check option
         if crop_function_version == 1 and align_multi:
             raise RuntimeError("When align_multi is true, crop_function_version must be 0")
         # if image is too big, resize to a smaller image
         if np.min(image.shape[0:2]) > 1000:
-            ratio = 1000 / np.min(image.shape[0:2])
+            ratio = 1000 / np.min(image.shape[0:2])  # 比例
             image = cv2.resize(image, dsize=(0, 0), fx=ratio, fy=ratio)
         # make border for image
         border = int(np.min(image.shape[0:2]) * 0.3)
-        image = cv2.copyMakeBorder(image, border, border, border, border, cv2.BORDER_CONSTANT)
+        # image = cv2.copyMakeBorder(image, border, border, border, border, cv2.BORDER_CONSTANT)
+        # cv2.imshow("image-Border", image)  ###############
         # backup image
         original_image = image.copy()
         # get rectangles which contains face
@@ -72,13 +75,18 @@ class MaskGenerator:
                     # remove border
                     _row, _col, _ = landmark_image.shape
                     landmark_image = landmark_image[border:_row-border, border:_col-border, :]
-                else:
+                else:  # default
                     landmark_image = None
                 # create mask using landmarks
                 mask = create_mask_by_landmarks(landmarks.T, original_image)
+
+                # cv2.imshow("mask", mask)  ###############
+
+
                 if warp:
                     image, mask, r_mat = self._warp(original_image, mask, landmarks)
                     landmarks = self._get_rotated_points(landmarks, r_mat)
+                # cv2.imshow("imagewrap", image)  ###############
                 if crop:
                     if crop_function_version == 0:
                         image = self._crop_v0(image, landmarks, scale)
@@ -89,12 +97,13 @@ class MaskGenerator:
                             sys.stderr.write('%s: Failed to crop image and mask\n' % __file__)
                     else:
                         raise RuntimeError("crop_function_version must be 0 or 1")
-
-                if resize:
+                # cv2.imshow("imagecrop", image)  ###############
+                if resize:  # default
                     results.append((True, cv2.resize(mask, size), cv2.resize(image, size), landmark_image))
                 else:
                     results.append((True, mask, image, landmark_image))
-
+                # cv2.imshow("image-final-resize", cv2.resize(image, size))  ###############
+                # cv2.waitKey(0)  ###############
                 if not align_multi:
                     return results
             return results

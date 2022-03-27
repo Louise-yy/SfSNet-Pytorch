@@ -1,12 +1,15 @@
+import os
+
 import cv2
 import numpy as np
 import copy
 import random
 from PIL import ImageStat
-from skimage import data, exposure, img_as_float,filters
+from skimage import data, exposure, img_as_float, filters
 
+from config import PROJECT_DIR
 from src.functions import lambertian_attenuation, normal_harmonics, create_shading_recon
-from SfSNet_test import _decomposition,_test
+from SfSNet_test import _decomposition
 from src.utils import convert
 
 if __name__ == '__main__':
@@ -39,35 +42,63 @@ def change_albedo():
     return dst
 
 
-def albedo_highlight(img_path):  # 高光/对比度
-    # albedo = cv2.imread('D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/data/Albedo.png',
-    # cv2.IMREAD_UNCHANGED) img = cv2.imread(img_add, cv2.IMREAD_UNCHANGED)
-    n_out2, al_out2, light_out, al_out3, n_out3 = _test(img_path)
+def albedo_highlight(al_out3, n_out2, light_out, weight, gamma):  # 高光/对比度
+    # n_out2, al_out2, light_out, al_out3, n_out3 = _decomposition(img_path)
     albedo = convert(al_out3)
-    # h, w = albedo.shape[0:2]
-    # neww = 300
-    # newh = int(neww * (h / w))
-    # al_out2 = cv2.resize(albedo, (neww, newh))
-    # cv2.imshow("Albedo", albedo)
+    # cv2.imshow("alout3", al_out3)  # gai
+    # cv2.imshow("Albedo", albedo)  # gai
 
-    c = 1.25  # 1.2
-    b = 1  # 100
+    c = weight  # 1.25
+    b = gamma  # 1
     h, w, ch = albedo.shape  # 初始化一张黑图
     blank = np.zeros([h, w, ch], albedo.dtype)
     # 图像混合，c, 1-c为这两张图片的权重
     dst = cv2.addWeighted(albedo, c, blank, 1 - c, b)
-    # dst = cv2.resize(dst, (neww, newh))
-    cv2.imwrite('data/highlight.png', dst)
-    # cv2.imshow("Albedo change", dst)
+
+    # cv2.imshow("Albedo change", dst)  # gai
+    dst = np.float32(dst) / 255.0
+    dst = cv2.cvtColor(dst, cv2.COLOR_BGR2RGB)
+    Irec, Ishd = create_shading_recon(n_out2, dst, light_out)
+    Irec = cv2.cvtColor(Irec, cv2.COLOR_RGB2BGR)
+    cv2.imwrite(os.path.join(PROJECT_DIR, 'data/highlight.png'), convert(Irec))
+    # cv2.imshow("Irec", Irec)  # gai
+    # cv2.waitKey(0)  # gai
+    # return dst
+
+
+def albedo_bilateral(al_out3, n_out2, light_out, sigmaColor):
+    # sigmaColor：Sigma_color较大，则在邻域中的像素值相差较大的像素点也会用来平均。
+    # sigmaSpace：Sigma_space较大，则虽然离得较远，但是，只要值相近，就会互相影响
+    al_out3 = convert(al_out3)
+    bilateral_filter_img = cv2.bilateralFilter(al_out3, 9, sigmaColor, 40)  # 9 75 75
+    # cv2.imshow("bilateral_filter_img", bilateral_filter_img)
+
+    bilateral_filter_img = np.float32(bilateral_filter_img) / 255.0
+    bilateral_filter_img = cv2.cvtColor(bilateral_filter_img, cv2.COLOR_BGR2RGB)
+    Irec, Ishd = create_shading_recon(n_out2, bilateral_filter_img, light_out)
+    Irec = cv2.cvtColor(Irec, cv2.COLOR_RGB2BGR)
+    cv2.imwrite(os.path.join(PROJECT_DIR, 'data/buffing.png'), convert(Irec))
+
+    # cv2.imshow("Albedo", al_out3)
+    # cv2.imshow("Recon", Irec)
     # cv2.waitKey(0)
-    return dst
 
 
-def albedo_bilateral(img_path):
-    img = cv2.imread(img_path)
-    bilateral_filter_img = cv2.bilateralFilter(img, 9, 75, 75)
-    cv2.imshow("b", bilateral_filter_img)
-    cv2.waitKey(0)
+def albedo_sharp(al_out3, n_out2, light_out):
+    al_out3 = convert(al_out3)
+    dst = cv2.Laplacian(al_out3, -2)
+    # dst = cv2.addWeighted(al_out3, 1, blank, 1 - c, b)
+    # dst2 = cv2.add(al_out3, dst)
+    dst2 = al_out3 - dst
+    median = cv2.medianBlur(dst2, 3)
+    median = np.float32(median) / 255.0
+    median = cv2.cvtColor(median, cv2.COLOR_BGR2RGB)
+    Irec, Ishd = create_shading_recon(n_out2, median, light_out)
+    Irec = cv2.cvtColor(Irec, cv2.COLOR_RGB2BGR)
+    cv2.imwrite(os.path.join(PROJECT_DIR, 'data/sharpening.png'), convert(Irec))
+    # cv2.imshow("al_out3", al_out3)
+    # cv2.imshow("dst", Irec)
+    # cv2.waitKey(0)
 
 
 def albedo_mean(img_path):
@@ -82,7 +113,8 @@ def albedo_mean(img_path):
 
     for i in range(pad_num, m - pad_num):
         for j in range(pad_num, n - pad_num):
-            output_image[i, j] = np.sum(filter_template * input_image_cp[i - pad_num:i + pad_num + 1, j - pad_num:j + pad_num + 1]) / (3 ** 2)
+            output_image[i, j] = np.sum(
+                filter_template * input_image_cp[i - pad_num:i + pad_num + 1, j - pad_num:j + pad_num + 1]) / (3 ** 2)
     output_image = output_image[pad_num:m - pad_num, pad_num:n - pad_num]  # 裁剪
     cv2.imshow("m", output_image)
     cv2.waitKey(0)
@@ -109,7 +141,7 @@ def synthetic():
 
 
 def synthetic2():
-    shading = cv2.imread('data/shading.png', cv2.IMREAD_UNCHANGED).astype(np.float32)
+    # shading = cv2.imread('data/shading.png', cv2.IMREAD_UNCHANGED).astype(np.float32)
     # M = shading.shape[0]
     # shading = np.reshape(shading, (M, M, 3))
     # shading = cv2.cvtColor(shading, cv2.COLOR_BGR2RGB)
@@ -148,9 +180,14 @@ def synthetic2():
 
 
 if __name__ == '__main__':
+    n_out2, al_out2, light_out, al_out3, n_out3 = _decomposition(
+        "D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/11.png_face.png")
+    img = cv2.imread("D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/11.png_face.png")
     # change_albedo()
-    # albedo_highlight("D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/4.png_face.png")
-    # albedo_bilateral("D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/4.png_face.png")
-    albedo_mean("D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/4.png_face.png")
+    # albedo_highlight("D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/4.png_face.png", 1.25, 1)
+    # albedo_bilateral(al_out3, n_out2, light_out, 40)
+    # albedo_bilateral(img, n_out2, light_out, 40)
+    albedo_sharp(al_out3, n_out2, light_out)
+    # albedo_mean("D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/4.png_face.png")
     # synthetic()
     # synthetic2()
