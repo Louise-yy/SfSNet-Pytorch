@@ -66,8 +66,8 @@ def histMatch(grayArray, h_d):  # 直方图匹配函数，接受原始图像和�
 
 
 if __name__ == '__main__':
-    imdir = "D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/11.png_face.png"
-    imdir_match = "D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/4.png_face.png"
+    # imdir = "D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/11.png_face.png"
+    # imdir_match = "D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/4.png_face.png"
 
     img = cv2.imread("D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/11.png_face.png")
     img_match = cv2.imread("D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/4.png_face.png")
@@ -98,7 +98,7 @@ if __name__ == '__main__':
     # match图和其直方图
     plt.subplot(6, 3, 2)
     plt.title("match img")
-    plt.imshow(bm,cmap="gray")
+    plt.imshow(bm, cmap="gray")
 
     plt.subplot(6, 3, 5)
     hist_m = arrayToHist(bm, 256)
@@ -180,20 +180,20 @@ if __name__ == '__main__':
 
 
     plt.subplot(7, 3, 20)
-    img_after_match = cv2.merge([im_d_b, im_d_g, im_d_r])
+    img_after_match = cv2.merge([b, g, im_d_r])
     plt.imshow(img_after_match)
 
     plt.show()
     #
-    img_after = cv2.merge([b, g, r])
-    cv2.imshow("b", b)
-    cv2.imshow("im_d_b", im_d_b)
-    cv2.imshow("g", g)
-    cv2.imshow("im_d_g", im_d_g)
-    cv2.imshow("r", r)
-    cv2.imshow("im_d_r", im_d_r)
-    cv2.imshow("img", img)
-    # cv2.imshow("img_after", img_after)
-    cv2.imshow("img_after_match", img_after_match)
-    # # cv2.imshow("bm", bm)
-    cv2.waitKey(0)
+    # img_after = cv2.merge([b, g, r])
+    # cv2.imshow("b", b)
+    # cv2.imshow("im_d_b", im_d_b)
+    # cv2.imshow("g", g)
+    # cv2.imshow("im_d_g", im_d_g)
+    # cv2.imshow("r", r)
+    # cv2.imshow("im_d_r", im_d_r)
+    # cv2.imshow("img", img)
+    # cv2.imshow("img_match", img_match)
+    # cv2.imshow("img_after_match", img_after_match)
+    # # # cv2.imshow("bm", bm)
+    # cv2.waitKey(0)
