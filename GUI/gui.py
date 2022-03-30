@@ -8,7 +8,7 @@ from Interaction import Ui_Form
 
 
 from SfSNet_test import _decomposition
-from alter import albedo_highlight, albedo_bilateral, albedo_sharp
+from alter import albedo_highlight, albedo_bilateral, albedo_sharp, histogram_matching
 
 
 class Gui(QWidget, Ui_Form):
@@ -121,6 +121,26 @@ class Gui(QWidget, Ui_Form):
             self.L_ShowAfter.setPixmap(image)
             _translate = QtCore.QCoreApplication.translate
             self.label.setText(_translate("Form", "The image after sharpening:"))
+
+    def reference_click(self):
+        imgName, imgType = QFileDialog.getOpenFileName(self, 'Open file', 'D:\AoriginallyD\Cardiff-year3'
+                                                                          '\final_project\SfSNet-Pytorch',
+                                                       'Image files (*.jpg *.gif *.png *.jpeg)')
+        image = QtGui.QPixmap(imgName).scaled(384, 384, aspectRatioMode=Qt.KeepAspectRatio)
+        self.L_ShowPic_2.setScaledContents(True)
+        # Show the image on the label
+        self.L_ShowPic_2.setPixmap(image)
+
+        path = self.img_add
+        histogram_matching(path, imgName)
+
+        image2 = QtGui.QPixmap(
+            "D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/data/matching.png").scaled(
+            384, 384, aspectRatioMode=Qt.KeepAspectRatio)
+        self.L_ShowAfter.setScaledContents(True)
+        self.L_ShowAfter.setPixmap(image2)
+        _translate = QtCore.QCoreApplication.translate
+        self.label.setText(_translate("Form", "The image after matching:"))
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
