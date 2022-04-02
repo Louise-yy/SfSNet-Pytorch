@@ -131,8 +131,10 @@ class Gui(QWidget, Ui_Form):
         # Show the image on the label
         self.L_ShowPic_2.setPixmap(image)
 
-        path = self.img_add
-        histogram_matching(path, imgName)
+        al_out3 = self.img_al_out3
+        n_out2 = self.img_n_out2
+        light_out = self.img_light_out
+        histogram_matching(al_out3, n_out2, light_out, imgName)
 
         image2 = QtGui.QPixmap(
             "D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/data/matching.png").scaled(
