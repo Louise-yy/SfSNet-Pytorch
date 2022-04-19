@@ -11,6 +11,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
+
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -78,8 +79,11 @@ class Ui_Form(object):
         self.pushButton.setGeometry(QtCore.QRect(860, 220, 131, 41))
         self.pushButton.setObjectName("pushButton")
         self.pushButton_2 = QtWidgets.QPushButton(Form)
-        self.pushButton_2.setGeometry(QtCore.QRect(860, 300, 131, 41))
+        self.pushButton_2.setGeometry(QtCore.QRect(860, 300, 131, 71))
         self.pushButton_2.setObjectName("pushButton_2")
+        self.B_lighting = QtWidgets.QPushButton(Form)
+        self.B_lighting.setGeometry(QtCore.QRect(860, 400, 131, 41))
+        self.B_lighting.setObjectName("B_lighting")
         self.F_ShowAfter.raise_()
         self.F_ShowBefore.raise_()
         self.B_sharpening.raise_()
@@ -88,6 +92,7 @@ class Ui_Form(object):
         self.S_buffing.raise_()
         self.pushButton.raise_()
         self.pushButton_2.raise_()
+        self.B_lighting.raise_()
 
         self.retranslateUi(Form)
         self.B_select.clicked.connect(Form.getImage_click)
@@ -97,6 +102,7 @@ class Ui_Form(object):
         self.S_buffing.actionTriggered['int'].connect(Form.buffing_slide)
         self.pushButton.clicked.connect(Form.sharpening_click)
         self.pushButton_2.clicked.connect(Form.reference_click)
+        self.B_lighting.clicked.connect(Form.lighting_click)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
@@ -109,3 +115,4 @@ class Ui_Form(object):
         self.B_buffing.setText(_translate("Form", "Buffing"))
         self.pushButton.setText(_translate("Form", "Sharpening"))
         self.pushButton_2.setText(_translate("Form", "Change by reference"))
+        self.B_lighting.setText(_translate("Form", "Lighting"))

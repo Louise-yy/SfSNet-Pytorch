@@ -224,11 +224,24 @@
      <x>860</x>
      <y>300</y>
      <width>131</width>
-     <height>41</height>
+     <height>71</height>
     </rect>
    </property>
    <property name="text">
     <string>Change by reference</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="B_lighting">
+   <property name="geometry">
+    <rect>
+     <x>860</x>
+     <y>400</y>
+     <width>131</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Lighting</string>
    </property>
   </widget>
   <zorder>F_ShowAfter</zorder>
@@ -239,6 +252,7 @@
   <zorder>S_buffing</zorder>
   <zorder>pushButton</zorder>
   <zorder>pushButton_2</zorder>
+  <zorder>B_lighting</zorder>
  </widget>
  <resources/>
  <connections>
@@ -354,6 +368,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>B_lighting</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>lighting_click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>912</x>
+     <y>428</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>912</x>
+     <y>466</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>getImage_click()</slot>
@@ -363,5 +393,6 @@
   <slot>buffing_slide()</slot>
   <slot>sharpening_click()</slot>
   <slot>reference_click()</slot>
+  <slot>lighting_click()</slot>
  </slots>
 </ui>

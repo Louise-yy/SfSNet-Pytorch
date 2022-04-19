@@ -8,7 +8,7 @@ from Interaction import Ui_Form
 
 
 from SfSNet_test import _decomposition
-from alter import albedo_highlight, albedo_bilateral, albedo_sharp, histogram_matching
+from alter import albedo_highlight, albedo_bilateral, histogram_matching, unsharp_masking, shading_alter
 
 
 class Gui(QWidget, Ui_Form):
@@ -113,7 +113,7 @@ class Gui(QWidget, Ui_Form):
             al_out3 = self.img_al_out3
             n_out2 = self.img_n_out2
             light_out = self.img_light_out
-            albedo_sharp(al_out3, n_out2, light_out)
+            unsharp_masking(al_out3, 1, n_out2, light_out)
             image = QtGui.QPixmap(
                 "D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/data/sharpening.png").scaled(
                 384, 384, aspectRatioMode=Qt.KeepAspectRatio)
@@ -143,6 +143,29 @@ class Gui(QWidget, Ui_Form):
         self.L_ShowAfter.setPixmap(image2)
         _translate = QtCore.QCoreApplication.translate
         self.label.setText(_translate("Form", "The image after matching:"))
+
+    def lighting_click(self):
+        imgName, imgType = QFileDialog.getOpenFileName(self, 'Open file', 'D:\AoriginallyD\Cardiff-year3'
+                                                                          '\final_project\SfSNet-Pytorch',
+                                                       'Image files (*.jpg *.gif *.png *.jpeg)')
+        image = QtGui.QPixmap(imgName).scaled(384, 384, aspectRatioMode=Qt.KeepAspectRatio)
+        self.L_ShowPic_2.setScaledContents(True)
+        self.L_ShowPic_2.setPixmap(image)
+
+        al_out3 = self.img_al_out3
+        n_out2 = self.img_n_out2
+
+        shading_alter(imgName, n_out2, al_out3)
+
+        image2 = QtGui.QPixmap(
+            "D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/data/f2f.png").scaled(
+            384, 384, aspectRatioMode=Qt.KeepAspectRatio)
+        self.L_ShowAfter.setScaledContents(True)
+        self.L_ShowAfter.setPixmap(image2)
+        _translate = QtCore.QCoreApplication.translate
+        self.label.setText(_translate("Form", "The image after relighting:"))
+
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

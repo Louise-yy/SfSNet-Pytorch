@@ -84,7 +84,7 @@ def albedo_bilateral(al_out3, n_out2, light_out, sigmaColor):
     # cv2.waitKey(0)
 
 
-def albedo_sharp(al_out3, n_out2, light_out):
+def albedo_sharp(al_out3, n_out2, light_out):  # no usages
     al_out3 = convert(al_out3)
     dst = cv2.Laplacian(al_out3, -2)
     # dst = cv2.addWeighted(al_out3, 1, blank, 1 - c, b)
@@ -92,14 +92,40 @@ def albedo_sharp(al_out3, n_out2, light_out):
     median = al_out3 - dst
     median = cv2.medianBlur(median, 3)
     median = np.float32(median) / 255.0
+    # cv2.imshow("median", median)
     median = cv2.cvtColor(median, cv2.COLOR_BGR2RGB)
     Irec, Ishd = create_shading_recon(n_out2, median, light_out)
     Irec = cv2.cvtColor(Irec, cv2.COLOR_RGB2BGR)
     cv2.imwrite(os.path.join(PROJECT_DIR, 'data/sharpening.png'), convert(Irec))
 
     # cv2.imshow("al_out3", al_out3)
-    # cv2.imshow("median", median)
+    # cv2.imshow("dst", dst)
+    #
     # cv2.waitKey(0)
+
+
+def unsharp_masking(al_out3, amount, n_out2, light_out):
+    # al_out3 = convert(al_out3)
+    blur = cv2.GaussianBlur(al_out3, (5, 5), 5)
+    diff = al_out3 - blur
+    # mask = diff < 5
+    # dst = cv2.addWeighted(al_out3, 1 + -0.7, diff, -1 * -0.7, 0)
+    dst = al_out3 + amount * diff
+
+    # res = al_out3 * mask + dst * (1 - mask)
+
+
+    dst = cv2.cvtColor(dst, cv2.COLOR_BGR2RGB)
+    Irec, Ishd = create_shading_recon(n_out2, dst, light_out)
+    Irec = cv2.cvtColor(Irec, cv2.COLOR_RGB2BGR)
+    Irec = convert(Irec)
+    cv2.imwrite(os.path.join(PROJECT_DIR, 'data/sharpening.png'), Irec)
+
+    cv2.imshow("al_out3", al_out3)
+    # cv2.imshow("diff", diff)
+    # cv2.imshow("dst", dst)
+    cv2.imshow("Irec", Irec)
+    cv2.waitKey(0)
 
 
 def histogram_matching(img, normal, lighting, ref):
@@ -134,7 +160,21 @@ def histogram_matching(img, normal, lighting, ref):
     # cv2.waitKey(0)
 
 
-def albedo_mean(img_path):
+def shading_alter(source, target_nor, target_al):
+    ref = "D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/4.png_face.png"
+    target = cv2.imread(ref)
+    s = cv2.imread(source)
+    n_out2, al_out2, light_out, al_out3, n_out3 = _decomposition(source)
+    Irec, Ishd = create_shading_recon(target_nor, target_al, light_out)
+    cv2.imwrite(os.path.join(PROJECT_DIR, 'data/f2f.png'), convert(Irec))
+    # cv2.imshow('target', target)
+    # cv2.imshow('source', s)
+    # cv2.imshow('Irec', Irec)
+    # cv2.waitKey(0)
+
+
+
+def albedo_mean(img_path):  # no usages
     img = cv2.imread(img_path)
     input_image_cp = np.copy(img)  # 输入图像的副本
     filter_template = np.ones((3, 3))  # 空间滤波器模板
@@ -153,17 +193,11 @@ def albedo_mean(img_path):
     cv2.waitKey(0)
 
 
-
-
-
-
-
-
 if __name__ == '__main__':
     n_out2, al_out2, light_out, al_out3, n_out3 = _decomposition(
         "D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/4.png_face.png")
     # img = cv2.imread("D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/11.png_face.png")
-    img = "D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/4.png_face.png"
+    # img = "D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/4.png_face.png"
     ref = "D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/11.png_face.png"
     # change_albedo()
     # albedo_highlight("D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/4.png_face.png", 1.25, 1)
@@ -174,5 +208,6 @@ if __name__ == '__main__':
     # synthetic()
     # synthetic2()
 
-    histogram_matching(al_out3, n_out2, light_out, ref)
-
+    # histogram_matching(al_out3, n_out2, light_out, ref)
+    # unsharp_masking(al_out3, 1, n_out2, light_out)
+    shading_alter(ref, n_out2, al_out3)
