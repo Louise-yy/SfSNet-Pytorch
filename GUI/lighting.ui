@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1564</width>
+    <height>592</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QFrame" name="F_ShowBefore">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>30</y>
+     <width>791</width>
+     <height>481</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Box</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="QLabel" name="L_note1">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>0</y>
+      <width>641</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>SimSun-ExtB</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>please choose the image that need to be processed:</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="B_select">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>50</y>
+      <width>201</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Select Target image</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="L_ShowPic">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>130</y>
+      <width>311</width>
+      <height>311</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="L_ShowPic_2">
+    <property name="geometry">
+     <rect>
+      <x>440</x>
+      <y>130</y>
+      <width>311</width>
+      <height>311</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="B_select_2">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>50</y>
+      <width>201</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Select Source image</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QFrame" name="F_ShowAfter">
+   <property name="geometry">
+    <rect>
+     <x>1020</x>
+     <y>30</y>
+     <width>511</width>
+     <height>481</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Box</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>10</y>
+      <width>351</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>SimSun-ExtB</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>The image after relighting:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="L_ShowAfter">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>80</y>
+      <width>311</width>
+      <height>311</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QPushButton" name="B_lighting">
+   <property name="geometry">
+    <rect>
+     <x>850</x>
+     <y>60</y>
+     <width>131</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Lighting</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>1230</x>
+     <y>530</y>
+     <width>301</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Back to home page</string>
+   </property>
+  </widget>
+  <zorder>F_ShowAfter</zorder>
+  <zorder>F_ShowBefore</zorder>
+  <zorder>B_lighting</zorder>
+  <zorder>pushButton</zorder>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>B_select</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>getImage_click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>140</x>
+     <y>83</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>327</x>
+     <y>165</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>B_lighting</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>lighting_click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>902</x>
+     <y>88</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>912</x>
+     <y>466</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>B_select_2</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>getImage2_click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>674</x>
+     <y>97</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>646</x>
+     <y>520</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>returnHP_click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1257</x>
+     <y>562</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1140</x>
+     <y>561</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>getImage_click()</slot>
+  <slot>highlight_click()</slot>
+  <slot>highlight_slide()</slot>
+  <slot>buffing_click()</slot>
+  <slot>buffing_slide()</slot>
+  <slot>sharpening_click()</slot>
+  <slot>reference_click()</slot>
+  <slot>lighting_click()</slot>
+  <slot>getImage2_click()</slot>
+  <slot>returnHP_click()</slot>
+ </slots>
+</ui>

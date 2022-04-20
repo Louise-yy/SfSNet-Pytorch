@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>714</width>
-    <height>422</height>
+    <width>868</width>
+    <height>466</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,8 +16,8 @@
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
-     <x>260</x>
-     <y>130</y>
+     <x>340</x>
+     <y>180</y>
      <width>201</width>
      <height>61</height>
     </rect>
@@ -29,9 +29,9 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>160</x>
-     <y>30</y>
-     <width>431</width>
+     <x>130</x>
+     <y>40</y>
+     <width>661</width>
      <height>61</height>
     </rect>
    </property>
@@ -45,8 +45,8 @@
   <widget class="QPushButton" name="pushButton_2">
    <property name="geometry">
     <rect>
-     <x>260</x>
-     <y>230</y>
+     <x>340</x>
+     <y>280</y>
      <width>201</width>
      <height>61</height>
     </rect>
@@ -65,28 +65,12 @@
    <slot>connect_albedo()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>412</x>
-     <y>156</y>
+     <x>489</x>
+     <y>163</y>
     </hint>
     <hint type="destinationlabel">
-     <x>563</x>
-     <y>153</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_2</sender>
-   <signal>clicked()</signal>
-   <receiver>Form</receiver>
-   <slot>connect_lighting()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>400</x>
-     <y>250</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>564</x>
-     <y>259</y>
+     <x>661</x>
+     <y>168</y>
     </hint>
    </hints>
   </connection>

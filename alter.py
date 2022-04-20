@@ -121,11 +121,11 @@ def unsharp_masking(al_out3, amount, n_out2, light_out):
     Irec = convert(Irec)
     cv2.imwrite(os.path.join(PROJECT_DIR, 'data/sharpening.png'), Irec)
 
-    cv2.imshow("al_out3", al_out3)
+    # cv2.imshow("al_out3", al_out3)
     # cv2.imshow("diff", diff)
     # cv2.imshow("dst", dst)
-    cv2.imshow("Irec", Irec)
-    cv2.waitKey(0)
+    # cv2.imshow("Irec", Irec)
+    # cv2.waitKey(0)
 
 
 def histogram_matching(img, normal, lighting, ref):
@@ -171,7 +171,6 @@ def shading_alter(source, target_nor, target_al):
     # cv2.imshow('source', s)
     # cv2.imshow('Irec', Irec)
     # cv2.waitKey(0)
-
 
 
 def albedo_mean(img_path):  # no usages

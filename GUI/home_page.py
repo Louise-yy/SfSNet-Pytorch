@@ -9,22 +9,21 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from Interaction import *
 
 
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(714, 422)
+        Form.resize(868, 466)
         self.pushButton = QtWidgets.QPushButton(Form)
-        self.pushButton.setGeometry(QtCore.QRect(260, 130, 201, 61))
+        self.pushButton.setGeometry(QtCore.QRect(340, 180, 201, 61))
         self.pushButton.setObjectName("pushButton")
         self.label = QtWidgets.QLabel(Form)
-        self.label.setGeometry(QtCore.QRect(160, 30, 431, 61))
+        self.label.setGeometry(QtCore.QRect(130, 40, 661, 61))
         self.label.setStyleSheet("font: 16pt \"Cambria\";")
         self.label.setObjectName("label")
         self.pushButton_2 = QtWidgets.QPushButton(Form)
-        self.pushButton_2.setGeometry(QtCore.QRect(260, 230, 201, 61))
+        self.pushButton_2.setGeometry(QtCore.QRect(340, 280, 201, 61))
         self.pushButton_2.setObjectName("pushButton_2")
 
         self.retranslateUi(Form)

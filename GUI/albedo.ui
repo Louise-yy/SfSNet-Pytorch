@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1564</width>
-    <height>555</height>
+    <height>592</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -221,27 +221,27 @@
   <widget class="QPushButton" name="pushButton_2">
    <property name="geometry">
     <rect>
-     <x>860</x>
+     <x>830</x>
      <y>300</y>
-     <width>131</width>
-     <height>71</height>
+     <width>181</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="text">
     <string>Change by reference</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="B_lighting">
+  <widget class="QPushButton" name="pushButton_3">
    <property name="geometry">
     <rect>
-     <x>860</x>
-     <y>400</y>
-     <width>131</width>
+     <x>1230</x>
+     <y>530</y>
+     <width>301</width>
      <height>41</height>
     </rect>
    </property>
    <property name="text">
-    <string>Lighting</string>
+    <string>Back to home page</string>
    </property>
   </widget>
   <zorder>F_ShowAfter</zorder>
@@ -252,7 +252,7 @@
   <zorder>S_buffing</zorder>
   <zorder>pushButton</zorder>
   <zorder>pushButton_2</zorder>
-  <zorder>B_lighting</zorder>
+  <zorder>pushButton_3</zorder>
  </widget>
  <resources/>
  <connections>
@@ -369,18 +369,18 @@
    </hints>
   </connection>
   <connection>
-   <sender>B_lighting</sender>
+   <sender>pushButton_3</sender>
    <signal>clicked()</signal>
    <receiver>Form</receiver>
-   <slot>lighting_click()</slot>
+   <slot>returnHP_click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>912</x>
-     <y>428</y>
+     <x>1249</x>
+     <y>549</y>
     </hint>
     <hint type="destinationlabel">
-     <x>912</x>
-     <y>466</y>
+     <x>1087</x>
+     <y>545</y>
     </hint>
    </hints>
   </connection>
@@ -394,5 +394,6 @@
   <slot>sharpening_click()</slot>
   <slot>reference_click()</slot>
   <slot>lighting_click()</slot>
+  <slot>returnHP_click()</slot>
  </slots>
 </ui>
