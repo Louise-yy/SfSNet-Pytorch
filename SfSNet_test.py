@@ -11,9 +11,9 @@ from src.mask import MaskGenerator
 from src.model import SfSNet
 from src.utils import convert
 
-
 if __name__ == '__main__':
     pass
+
 
 # def _decomposition2():
 #     # define a SfSNet
@@ -212,8 +212,8 @@ def _decomposition(image_path):
     Irec, Ishd = create_shading_recon(n_out2, al_out2, light_out)
 
     # diff = (mask // 255)
-    # n_out3 = n_out2 * diff
-    # al_out3 = al_out2 * diff
+    # n_out2 = n_out2 * diff
+    # al_out2 = al_out2 * diff
     # Ishd = Ishd * diff
     # Irec = Irec * diff
 
@@ -237,7 +237,7 @@ def _decomposition(image_path):
     cv2.imwrite('data/shading.png', convert(Ishd))
     cv2.imwrite('data/Albedo.png', convert(al_out3))
 
-    return [n_out2, al_out2, light_out, al_out3, n_out3]
+    return [n_out2, al_out2, light_out, al_out3, n_out3, mask]
 
 
 if __name__ == '__main__':

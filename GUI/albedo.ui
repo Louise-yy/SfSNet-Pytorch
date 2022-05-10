@@ -6,33 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1564</width>
-    <height>592</height>
+    <width>1640</width>
+    <height>638</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QPushButton" name="B_sharpening">
-   <property name="geometry">
-    <rect>
-     <x>860</x>
-     <y>40</y>
-     <width>131</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Highlight</string>
-   </property>
-  </widget>
   <widget class="QFrame" name="F_ShowBefore">
    <property name="geometry">
     <rect>
      <x>20</x>
      <y>30</y>
      <width>791</width>
-     <height>481</height>
+     <height>541</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -63,21 +50,21 @@
    <widget class="QPushButton" name="B_select">
     <property name="geometry">
      <rect>
-      <x>640</x>
-      <y>10</y>
-      <width>121</width>
+      <x>110</x>
+      <y>80</y>
+      <width>221</width>
       <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>Select</string>
+     <string>Select original image</string>
     </property>
    </widget>
    <widget class="QLabel" name="L_ShowPic">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>80</y>
+      <x>60</x>
+      <y>160</y>
       <width>311</width>
       <height>311</height>
      </rect>
@@ -89,8 +76,8 @@
    <widget class="QLabel" name="L_ShowPic_2">
     <property name="geometry">
      <rect>
-      <x>410</x>
-      <y>80</y>
+      <x>430</x>
+      <y>160</y>
       <width>311</width>
       <height>311</height>
      </rect>
@@ -99,14 +86,27 @@
      <string/>
     </property>
    </widget>
+   <widget class="QPushButton" name="B_select_2">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>80</y>
+      <width>231</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Select Reference image</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QFrame" name="F_ShowAfter">
    <property name="geometry">
     <rect>
-     <x>1020</x>
+     <x>1090</x>
      <y>30</y>
      <width>511</width>
-     <height>481</height>
+     <height>541</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -118,7 +118,7 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>10</x>
       <y>10</y>
       <width>351</width>
       <height>51</height>
@@ -131,14 +131,14 @@
      </font>
     </property>
     <property name="text">
-     <string>The image after sharpening:</string>
+     <string>The image after processed:</string>
     </property>
    </widget>
    <widget class="QLabel" name="L_ShowAfter">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>80</y>
+      <x>90</x>
+      <y>150</y>
       <width>311</width>
       <height>311</height>
      </rect>
@@ -148,111 +148,211 @@
     </property>
    </widget>
   </widget>
-  <widget class="QSlider" name="S_hightlight">
+  <widget class="QFrame" name="F_albedo">
    <property name="geometry">
     <rect>
      <x>840</x>
-     <y>100</y>
-     <width>160</width>
-     <height>16</height>
+     <y>30</y>
+     <width>221</width>
+     <height>371</height>
     </rect>
    </property>
-   <property name="minimum">
-    <number>10</number>
+   <property name="frameShape">
+    <enum>QFrame::Box</enum>
    </property>
-   <property name="maximum">
-    <number>40</number>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
    </property>
-   <property name="singleStep">
-    <number>1</number>
-   </property>
-   <property name="value">
-    <number>10</number>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Horizontal</enum>
-   </property>
+   <widget class="QLabel" name="L_albedo">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>10</y>
+      <width>141</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Base on albedo:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="B_highlight">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>40</y>
+      <width>131</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Highlight</string>
+    </property>
+   </widget>
+   <widget class="QSlider" name="S_hightlight">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>90</y>
+      <width>160</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="minimum">
+     <number>10</number>
+    </property>
+    <property name="maximum">
+     <number>40</number>
+    </property>
+    <property name="singleStep">
+     <number>1</number>
+    </property>
+    <property name="value">
+     <number>10</number>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="B_buffing">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>120</y>
+      <width>131</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Buffing</string>
+    </property>
+   </widget>
+   <widget class="QSlider" name="S_buffing">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>180</y>
+      <width>160</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="minimum">
+     <number>10</number>
+    </property>
+    <property name="maximum">
+     <number>75</number>
+    </property>
+    <property name="singleStep">
+     <number>1</number>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="B_sharpening">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>210</y>
+      <width>131</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Sharpening</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="B_a_reference">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>310</y>
+      <width>181</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Change by reference</string>
+    </property>
+   </widget>
+   <widget class="QSlider" name="S_sharpening">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>270</y>
+      <width>160</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="minimum">
+     <number>0</number>
+    </property>
+    <property name="maximum">
+     <number>5</number>
+    </property>
+    <property name="singleStep">
+     <number>1</number>
+    </property>
+    <property name="pageStep">
+     <number>1</number>
+    </property>
+    <property name="value">
+     <number>0</number>
+    </property>
+    <property name="sliderPosition">
+     <number>0</number>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
   </widget>
-  <widget class="QPushButton" name="B_buffing">
-   <property name="geometry">
-    <rect>
-     <x>860</x>
-     <y>130</y>
-     <width>131</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Buffing</string>
-   </property>
-  </widget>
-  <widget class="QSlider" name="S_buffing">
+  <widget class="QFrame" name="F_lighting">
    <property name="geometry">
     <rect>
      <x>840</x>
-     <y>190</y>
-     <width>160</width>
-     <height>16</height>
+     <y>410</y>
+     <width>221</width>
+     <height>161</height>
     </rect>
    </property>
-   <property name="minimum">
-    <number>10</number>
+   <property name="frameShape">
+    <enum>QFrame::Box</enum>
    </property>
-   <property name="maximum">
-    <number>75</number>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
    </property>
-   <property name="orientation">
-    <enum>Qt::Horizontal</enum>
-   </property>
+   <widget class="QLabel" name="L_lighting">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>10</y>
+      <width>181</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Base on lighting:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="B_l_reference">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>40</y>
+      <width>181</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Change by reference</string>
+    </property>
+   </widget>
   </widget>
-  <widget class="QPushButton" name="pushButton">
-   <property name="geometry">
-    <rect>
-     <x>860</x>
-     <y>220</y>
-     <width>131</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Sharpening</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton_2">
-   <property name="geometry">
-    <rect>
-     <x>830</x>
-     <y>300</y>
-     <width>181</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Change by reference</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton_3">
-   <property name="geometry">
-    <rect>
-     <x>1230</x>
-     <y>530</y>
-     <width>301</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Back to home page</string>
-   </property>
-  </widget>
+  <zorder>F_albedo</zorder>
   <zorder>F_ShowAfter</zorder>
   <zorder>F_ShowBefore</zorder>
-  <zorder>B_sharpening</zorder>
-  <zorder>S_hightlight</zorder>
-  <zorder>B_buffing</zorder>
-  <zorder>S_buffing</zorder>
-  <zorder>pushButton</zorder>
-  <zorder>pushButton_2</zorder>
-  <zorder>pushButton_3</zorder>
+  <zorder>F_lighting</zorder>
  </widget>
  <resources/>
  <connections>
@@ -263,8 +363,8 @@
    <slot>getImage_click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>460</x>
-     <y>43</y>
+     <x>100</x>
+     <y>83</y>
     </hint>
     <hint type="destinationlabel">
      <x>327</x>
@@ -273,18 +373,34 @@
    </hints>
   </connection>
   <connection>
-   <sender>B_sharpening</sender>
+   <sender>B_select_2</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>getImage2_click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>678</x>
+     <y>98</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>702</x>
+     <y>545</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>B_highlight</sender>
    <signal>clicked()</signal>
    <receiver>Form</receiver>
    <slot>highlight_click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>699</x>
-     <y>63</y>
+     <x>971</x>
+     <y>85</y>
     </hint>
     <hint type="destinationlabel">
-     <x>745</x>
-     <y>135</y>
+     <x>1002</x>
+     <y>4</y>
     </hint>
    </hints>
   </connection>
@@ -295,12 +411,12 @@
    <slot>highlight_slide()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>944</x>
-     <y>109</y>
+     <x>1005</x>
+     <y>130</y>
     </hint>
     <hint type="destinationlabel">
-     <x>948</x>
-     <y>130</y>
+     <x>909</x>
+     <y>3</y>
     </hint>
    </hints>
   </connection>
@@ -311,12 +427,12 @@
    <slot>buffing_click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>902</x>
-     <y>150</y>
+     <x>940</x>
+     <y>169</y>
     </hint>
     <hint type="destinationlabel">
-     <x>914</x>
-     <y>202</y>
+     <x>822</x>
+     <y>412</y>
     </hint>
    </hints>
   </connection>
@@ -327,60 +443,76 @@
    <slot>buffing_slide()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>867</x>
-     <y>198</y>
+     <x>896</x>
+     <y>213</y>
     </hint>
     <hint type="destinationlabel">
-     <x>868</x>
-     <y>242</y>
+     <x>845</x>
+     <y>417</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>pushButton</sender>
+   <sender>B_sharpening</sender>
    <signal>clicked()</signal>
    <receiver>Form</receiver>
    <slot>sharpening_click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>923</x>
-     <y>241</y>
+     <x>936</x>
+     <y>251</y>
     </hint>
     <hint type="destinationlabel">
-     <x>946</x>
-     <y>273</y>
+     <x>870</x>
+     <y>424</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_2</sender>
+   <sender>B_a_reference</sender>
    <signal>clicked()</signal>
    <receiver>Form</receiver>
    <slot>reference_click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>935</x>
-     <y>324</y>
+     <x>982</x>
+     <y>359</y>
     </hint>
     <hint type="destinationlabel">
-     <x>944</x>
-     <y>355</y>
+     <x>1045</x>
+     <y>413</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_3</sender>
+   <sender>B_l_reference</sender>
    <signal>clicked()</signal>
    <receiver>Form</receiver>
-   <slot>returnHP_click()</slot>
+   <slot>lighting_click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1249</x>
-     <y>549</y>
+     <x>1014</x>
+     <y>472</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1087</x>
-     <y>545</y>
+     <x>1073</x>
+     <y>588</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>S_sharpening</sender>
+   <signal>actionTriggered(int)</signal>
+   <receiver>Form</receiver>
+   <slot>sharpening_slide()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1009</x>
+     <y>306</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1074</x>
+     <y>323</y>
     </hint>
    </hints>
   </connection>
@@ -395,5 +527,7 @@
   <slot>reference_click()</slot>
   <slot>lighting_click()</slot>
   <slot>returnHP_click()</slot>
+  <slot>getImage2_click()</slot>
+  <slot>sharpening_slide()</slot>
  </slots>
 </ui>
