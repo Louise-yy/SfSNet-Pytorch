@@ -22,8 +22,8 @@ if __name__ == '__main__':
 def albedo_highlight(al_out3, n_out2, light_out, mask, weight, gamma):
     albedo = convert(al_out3)
 
-    c = weight  # 1.25
-    b = gamma  # 1
+    c = weight
+    b = gamma
     h, w, ch = albedo.shape
     blank = np.zeros([h, w, ch], albedo.dtype)
     # Image blending, c, 1-c are the weights of the two images
@@ -38,8 +38,8 @@ def albedo_highlight(al_out3, n_out2, light_out, mask, weight, gamma):
     cv2.imwrite(os.path.join(PROJECT_DIR, 'data/highlight.png'), highlight)
     return cv2.cvtColor(dst, cv2.COLOR_RGB2BGR)
 
-    # cv2.imshow("Irec", highlight)  # gai
-    # cv2.waitKey(0)  # gai
+    # cv2.imshow("Irec", highlight)
+    # cv2.waitKey(0)
 
 
 def albedo_bilateral(al_out3, n_out2, light_out, mask, sigmaColor):
@@ -47,7 +47,6 @@ def albedo_bilateral(al_out3, n_out2, light_out, mask, sigmaColor):
     # sigmaSpace：Sigma_space较大，则虽然离得较远，但是，只要值相近，就会互相影响
     al_out3 = convert(al_out3)
     bilateral_filter_img = cv2.bilateralFilter(al_out3, 9, sigmaColor, 40)  # 9 75 75
-    # cv2.imshow("bilateral_filter_img", bilateral_filter_img)
 
     bilateral_filter_img = np.float32(bilateral_filter_img) / 255.0
     bilateral_filter_img = cv2.cvtColor(bilateral_filter_img, cv2.COLOR_BGR2RGB)
@@ -115,9 +114,6 @@ def histogram_matching(img, normal, lighting, ref, mask):
 
 
 def shading_alter(original, reference_nor, reference_al, mask):
-    # ref = "D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/4.png_face.png"
-    # target = cv2.imread(ref)
-    # s = cv2.imread(original)
     n_out2, al_out2, light_out, al_out3, n_out3, mask2 = _decomposition(original)
     Irec, Ishd = create_shading_recon(reference_nor, reference_al, light_out)
     f2f = convert(Irec)
@@ -130,8 +126,8 @@ def shading_alter(original, reference_nor, reference_al, mask):
     # cv2.imshow('Irec', f2f)
     # cv2.waitKey(0)
 
-
-# def change_albedo():  # No usage highlight
+# some previous function versions before improvement
+# def change_albedo():  # equal to highlight function
 #     albedo = cv2.imread('data/Albedo.png', cv2.IMREAD_UNCHANGED)
 #     h, w = albedo.shape[0:2]
 #     neww = 300
@@ -155,24 +151,6 @@ def shading_alter(original, reference_nor, reference_al, mask):
 #     cv2.imshow("Albedo change", dst)
 #     cv2.waitKey(0)
 #     return dst
-
-# def albedo_mean(img_path):  # no usages
-#     img = cv2.imread(img_path)
-#     input_image_cp = np.copy(img)  # 输入图像的副本
-#     filter_template = np.ones((3, 3))  # 空间滤波器模板
-#     pad_num = int((3 - 1) / 2)  # 输入图像需要填充的尺寸
-#     input_image_cp = np.pad(input_image_cp, (pad_num, pad_num), mode="constant", constant_values=0)  # 填充输入图像
-#     m, n = input_image_cp.shape  # 获取填充后的输入图像的大小
-#     output_image = np.copy(input_image_cp)  # 输出图像
-#     # 空间滤波
-#
-#     for i in range(pad_num, m - pad_num):
-#         for j in range(pad_num, n - pad_num):
-#             output_image[i, j] = np.sum(
-#                 filter_template * input_image_cp[i - pad_num:i + pad_num + 1, j - pad_num:j + pad_num + 1]) / (3 ** 2)
-#     output_image = output_image[pad_num:m - pad_num, pad_num:n - pad_num]  # 裁剪
-#     cv2.imshow("m", output_image)
-#     cv2.waitKey(0)
 
 # def albedo_sharp(al_out3, n_out2, light_out):  # no usages unsharp masking
 #     al_out3 = convert(al_out3)
@@ -213,7 +191,6 @@ if __name__ == '__main__':
     # cv2.waitKey(0)
 
     # change_albedo()
-    # albedo_mean("D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/4.png_face.png")
     # albedo_sharp(al_out3, n_out2, light_out)
     # cv2.imshow("ori", img)
     # cv2.waitKey(0)

@@ -145,6 +145,6 @@ def drawHis2():
     plt.show()
 
 
-if __name__ == '__main__':
-    # drawHis()
-    drawHis2()
+# if __name__ == '__main__':
+#     # drawHis()
+#     drawHis2()
