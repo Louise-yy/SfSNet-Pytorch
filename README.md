@@ -19,7 +19,7 @@ http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2 ,
 and uncompress it to directory `data`.
 
 * Create and activate a virtual environment
-        * for python 2.*
+    * for python 2.*
     ```bash
     pip install virtualenv
     virtualenv -p python2 venv2

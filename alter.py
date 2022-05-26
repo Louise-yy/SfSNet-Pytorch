@@ -2,26 +2,30 @@ import os
 
 import cv2
 import numpy as np
-import copy
-import random
-from PIL import ImageStat
-from matplotlib import pyplot as plt
-from skimage import data, exposure, img_as_float, filters
 
-from config import PROJECT_DIR, M, LANDMARK_PATH
-from src.functions import lambertian_attenuation, normal_harmonics, create_shading_recon
+from config import PROJECT_DIR
+from src.functions import create_shading_recon
 from SfSNet_test import _decomposition
-from src.mask import MaskGenerator
 from src.utils import convert
-from skimage.exposure import match_histograms
 
-if __name__ == '__main__':
-    pass
+# if __name__ == '__main__':
+#     pass
 
 
 def albedo_highlight(al_out3, n_out2, light_out, mask, weight, gamma):
-    albedo = convert(al_out3)
+    """
+    @brief Adding highlight to the input image
 
+    @param al_out3 albedo of the input image
+    @param n_out2 normal of the input image
+    @param light_out lighting of the input image
+    @param mask mask of the input image
+    @param weight Weighting of albedo, which is an argument to the addWeighted function
+    @param gamma The value added to the image blend, which is also an argument to the addWeighted function
+
+    @return dst Processed albedo
+    """
+    albedo = convert(al_out3)
     c = weight
     b = gamma
     h, w, ch = albedo.shape
@@ -43,6 +47,17 @@ def albedo_highlight(al_out3, n_out2, light_out, mask, weight, gamma):
 
 
 def albedo_bilateral(al_out3, n_out2, light_out, mask, sigmaColor):
+    """
+    @brief Adding buffing to the input image
+
+    @param al_out3 albedo of the input image
+    @param n_out2 normal of the input image
+    @param light_out lighting of the input image
+    @param mask mask of the input image
+    @param sigmaColor The sigma parameter in coordinate space, which is an argument to the bilateralFilter function
+
+    @return bilateral_filter_img Processed albedo
+    """
     # sigmaColor：Sigma_color较大，则在邻域中的像素值相差较大的像素点也会用来平均。
     # sigmaSpace：Sigma_space较大，则虽然离得较远，但是，只要值相近，就会互相影响
     al_out3 = convert(al_out3)
@@ -62,6 +77,17 @@ def albedo_bilateral(al_out3, n_out2, light_out, mask, sigmaColor):
 
 
 def unsharp_masking(al_out3, amount, n_out2, light_out, mask):
+    """
+    @brief Adding buffing to the input image
+
+    @param al_out3 albedo of the input image
+    @param n_out2 normal of the input image
+    @param light_out lighting of the input image
+    @param mask mask of the input image
+    @param amount Scaling factor for high-frequency section
+
+    @return dst Processed albedo
+    """
     blur = cv2.GaussianBlur(al_out3, (5, 5), 5)
     diff = al_out3 - blur
     dst = al_out3 + amount * diff
@@ -79,6 +105,17 @@ def unsharp_masking(al_out3, amount, n_out2, light_out, mask):
 
 
 def histogram_matching(img, normal, lighting, ref, mask):
+    """
+    @brief Change the albedo of the original image according to the albedo of the reference image
+
+    @param img albedo of the input image
+    @param normal normal of the input image
+    @param lighting lighting of the input image
+    @param ref Address of the reference image
+    @param mask mask of the input image
+
+    @return out Processed albedo
+    """
     n_out2, al_out2, light_out, al_out3, n_out3, mask2 = _decomposition(ref)
 
     al_out3 = convert(al_out3)
@@ -92,12 +129,12 @@ def histogram_matching(img, normal, lighting, ref, mask):
         cdf_ref = np.cumsum(hist_ref)
         # print(cdf_ref)
         for j in range(256):
-                tmp = abs(cdf_img[j] - cdf_ref)
-                # print(tmp)
-                tmp = tmp.tolist()
-                # print(tmp)
-                idx = tmp.index(min(tmp))  # find the smallest number in tmp, get the index of this number
-                out[:, :, i][img[:, :, i] == j] = idx
+            tmp = abs(cdf_img[j] - cdf_ref)
+            # print(tmp)
+            tmp = tmp.tolist()
+            # print(tmp)
+            idx = tmp.index(min(tmp))  # find the smallest number in tmp, get the index of this number
+            out[:, :, i][img[:, :, i] == j] = idx
 
     out = np.float32(out) / 255.0
     Irec, Ishd = create_shading_recon(normal, out, lighting)
@@ -113,9 +150,19 @@ def histogram_matching(img, normal, lighting, ref, mask):
     # cv2.waitKey(0)
 
 
-def shading_alter(original, reference_nor, reference_al, mask):
-    n_out2, al_out2, light_out, al_out3, n_out3, mask2 = _decomposition(original)
-    Irec, Ishd = create_shading_recon(reference_nor, reference_al, light_out)
+def shading_alter(ref, normal, albedo, mask):
+    """
+    @brief Relighting
+
+    @param ref Address of the reference imgage
+    @param normal normal of the input image
+    @param albedo albedo of the input image
+    @param mask mask of the input image
+
+    @return light_out Reference lighting
+    """
+    n_out2, al_out2, light_out, al_out3, n_out3, mask2 = _decomposition(ref)
+    Irec, Ishd = create_shading_recon(normal, albedo, light_out)
     f2f = convert(Irec)
     diff = (mask // 255)
     f2f = f2f * diff
@@ -125,6 +172,7 @@ def shading_alter(original, reference_nor, reference_al, mask):
     # cv2.imshow('ref-light', light_out)
     # cv2.imshow('Irec', f2f)
     # cv2.waitKey(0)
+
 
 # some previous function versions before improvement
 # def change_albedo():  # equal to highlight function
@@ -172,25 +220,25 @@ def shading_alter(original, reference_nor, reference_al, mask):
 #     cv2.waitKey(0)
 
 
-if __name__ == '__main__':
-    n_out2, al_out2, light_out, al_out3, n_out3, mask = _decomposition(
-        "D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/11.png_face.png")
-    img = cv2.imread("D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/11.png_face.png")
-    # img = "D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/4.png_face.png"
-    ref = "D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/9.png_face.png"
-    img_ref = cv2.imread("D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/9.png_face.png")
-
-    # albedo_highlight(al_out3, n_out2, light_out, mask, 1.25, 1)  # 1.25 1
-    # albedo_bilateral(al_out3, n_out2, light_out, mask, 40)
-    # unsharp_masking(al_out3, 3, n_out2, light_out, mask)
-    # histogram_matching(al_out3, n_out2, light_out, ref, mask)
-    # shading_alter(ref, n_out2, al_out3, mask)
-    # cv2.imshow("img", img)
-    # cv2.imshow("ref", img_ref)
-    # cv2.imshow("albedo", al_out3)
-    # cv2.waitKey(0)
-
-    # change_albedo()
-    # albedo_sharp(al_out3, n_out2, light_out)
-    # cv2.imshow("ori", img)
-    # cv2.waitKey(0)
+# if __name__ == '__main__':
+#     n_out2, al_out2, light_out, al_out3, n_out3, mask = _decomposition(
+#         "D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/11.png_face.png")
+#     img = cv2.imread("D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/11.png_face.png")
+#     # img = "D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/4.png_face.png"
+#     ref = "D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/9.png_face.png"
+#     img_ref = cv2.imread("D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/9.png_face.png")
+#
+#     # albedo_highlight(al_out3, n_out2, light_out, mask, 1.25, 1)  # 1.25 1
+#     # albedo_bilateral(al_out3, n_out2, light_out, mask, 40)
+#     # unsharp_masking(al_out3, 3, n_out2, light_out, mask)
+#     # histogram_matching(al_out3, n_out2, light_out, ref, mask)
+#     # shading_alter(ref, n_out2, al_out3, mask)
+#     # cv2.imshow("img", img)
+#     # cv2.imshow("ref", img_ref)
+#     # cv2.imshow("albedo", al_out3)
+#     # cv2.waitKey(0)
+#
+#     # change_albedo()
+#     # albedo_sharp(al_out3, n_out2, light_out)
+#     # cv2.imshow("ori", img)
+#     # cv2.waitKey(0)
