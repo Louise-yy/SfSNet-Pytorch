@@ -103,7 +103,7 @@ class Ui_Form(object):
         self.S_sharpening.setOrientation(QtCore.Qt.Horizontal)
         self.S_sharpening.setObjectName("S_sharpening")
         self.F_lighting = QtWidgets.QFrame(Form)
-        self.F_lighting.setGeometry(QtCore.QRect(840, 410, 221, 161))
+        self.F_lighting.setGeometry(QtCore.QRect(840, 410, 221, 91))
         self.F_lighting.setFrameShape(QtWidgets.QFrame.Box)
         self.F_lighting.setFrameShadow(QtWidgets.QFrame.Raised)
         self.F_lighting.setObjectName("F_lighting")
@@ -113,10 +113,14 @@ class Ui_Form(object):
         self.B_l_reference = QtWidgets.QPushButton(self.F_lighting)
         self.B_l_reference.setGeometry(QtCore.QRect(20, 40, 181, 41))
         self.B_l_reference.setObjectName("B_l_reference")
+        self.pushButton = QtWidgets.QPushButton(Form)
+        self.pushButton.setGeometry(QtCore.QRect(890, 520, 141, 41))
+        self.pushButton.setObjectName("pushButton")
         self.F_albedo.raise_()
         self.F_ShowAfter.raise_()
         self.F_ShowBefore.raise_()
         self.F_lighting.raise_()
+        self.pushButton.raise_()
 
         self.retranslateUi(Form)
         self.B_select.clicked.connect(Form.getImage_click)
@@ -129,6 +133,7 @@ class Ui_Form(object):
         self.B_a_reference.clicked.connect(Form.reference_click)
         self.B_l_reference.clicked.connect(Form.lighting_click)
         self.S_sharpening.actionTriggered['int'].connect(Form.sharpening_slide)
+        self.pushButton.clicked.connect(Form.save_click)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
@@ -145,3 +150,4 @@ class Ui_Form(object):
         self.B_a_reference.setText(_translate("Form", "Change by reference"))
         self.L_lighting.setText(_translate("Form", "<html><head/><body><p><span style=\" font-weight:600;\">Base on lighting:</span></p></body></html>"))
         self.B_l_reference.setText(_translate("Form", "Change by reference"))
+        self.pushButton.setText(_translate("Form", "Save"))

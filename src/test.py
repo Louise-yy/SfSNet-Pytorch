@@ -178,7 +178,6 @@ if __name__ == '__main__':
     im_d_g = im_d_g.astype(np.uint8)
     im_d_r = im_d_g.astype(np.uint8)
 
-
     plt.subplot(7, 3, 20)
     img_after_match = cv2.merge([b, g, im_d_r])
     plt.imshow(img_after_match)

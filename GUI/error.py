@@ -11,28 +11,27 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_Form(object):
-    def setupUi(self, Form):
-        Form.setObjectName("Form")
-        Form.resize(409, 236)
-        self.L_text1 = QtWidgets.QLabel(Form)
-        self.L_text1.setGeometry(QtCore.QRect(120, 90, 271, 16))
+class Ui_Error(object):
+    def setupUi(self, Error):
+        Error.setObjectName("Error")
+        Error.resize(512, 236)
+        self.L_text1 = QtWidgets.QLabel(Error)
+        self.L_text1.setGeometry(QtCore.QRect(130, 90, 361, 16))
         self.L_text1.setObjectName("L_text1")
-        self.L_image = QtWidgets.QLabel(Form)
+        self.L_image = QtWidgets.QLabel(Error)
         self.L_image.setGeometry(QtCore.QRect(20, 50, 91, 91))
         self.L_image.setText("")
         self.L_image.setObjectName("L_image")
-        self.pushButton = QtWidgets.QPushButton(Form)
-        self.pushButton.setGeometry(QtCore.QRect(160, 170, 75, 23))
+        self.pushButton = QtWidgets.QPushButton(Error)
+        self.pushButton.setGeometry(QtCore.QRect(210, 160, 81, 31))
         self.pushButton.setObjectName("pushButton")
 
-        self.retranslateUi(Form)
-        self.pushButton.clicked.connect(Form.OK_clicked)
-        QtCore.QMetaObject.connectSlotsByName(Form)
+        self.retranslateUi(Error)
+        self.pushButton.clicked.connect(Error.OK_clicked)
+        QtCore.QMetaObject.connectSlotsByName(Error)
 
-    def retranslateUi(self, Form):
+    def retranslateUi(self, Error):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
-        self.L_text1.setText(_translate("Form", "Please upload the reference image first"))
-        self.pushButton.setText(_translate("Form", "OK"))
-
+        Error.setWindowTitle(_translate("Error", "Error"))
+        self.L_text1.setText(_translate("Error", "Please upload the reference image first"))
+        self.pushButton.setText(_translate("Error", "OK"))

@@ -8,7 +8,8 @@ from albedo import Ui_Form as albedo_ui
 from config import PROJECT_DIR
 from home_page import Ui_Form as homePage_ui
 from lighting import Ui_Form as lighting_ui
-from error import Ui_Form as error_ui
+from error import Ui_Error as error_Gui
+from save import Ui_Save as save_Gui
 
 from SfSNet_test import _decomposition
 from alter import albedo_highlight, albedo_bilateral, histogram_matching, unsharp_masking, shading_alter
@@ -21,6 +22,7 @@ class albedo_Gui(QWidget, albedo_ui):
     img_n_out2 = None
     img_light_out = None
     img_mask = None
+    templete_albedo = None
 
     def __init__(self):
         super(albedo_Gui, self).__init__()
@@ -53,14 +55,18 @@ class albedo_Gui(QWidget, albedo_ui):
         self.L_ShowPic_2.setPixmap(image)
 
     def highlight_click(self):
-        if self.img_add == " ":
-            print("you haven't choose a picture yet")
+        if self.img_add == "":
+            self.ui = error_Gui()
+            _translate = QtCore.QCoreApplication.translate
+            self.ui.L_text1.setText(_translate("Form", "Please upload the original image first"))
+            self.ui.show()
         else:
             al_out3 = self.img_al_out3
             n_out2 = self.img_n_out2
             light_out = self.img_light_out
             mask = self.img_mask
             albedo = albedo_highlight(al_out3, n_out2, light_out, mask, 1.25, 1)
+            self.templete_albedo = albedo
             image = QtGui.QPixmap(
                 os.path.join(PROJECT_DIR, 'data/highlight.png')).scaled(
                 384, 384, aspectRatioMode=Qt.KeepAspectRatio)
@@ -70,8 +76,11 @@ class albedo_Gui(QWidget, albedo_ui):
             self.label.setText(_translate("Form", "The image after highlight:"))
 
     def highlight_slide(self):
-        if self.img_add == " ":
-            print("you haven't choose a picture yet")
+        if self.img_add == "":
+            self.ui = error_Gui()
+            _translate = QtCore.QCoreApplication.translate
+            self.ui.L_text1.setText(_translate("Form", "Please upload the original image first"))
+            self.ui.show()
         else:
             size = self.sender().value()
             weight = 1 + size / 100
@@ -81,6 +90,7 @@ class albedo_Gui(QWidget, albedo_ui):
             light_out = self.img_light_out
             mask = self.img_mask
             albedo = albedo_highlight(al_out3, n_out2, light_out, mask, weight, gamma)
+            self.templete_albedo = albedo
             image = QtGui.QPixmap(
                 os.path.join(PROJECT_DIR, 'data/highlight.png')).scaled(
                 384, 384, aspectRatioMode=Qt.KeepAspectRatio)
@@ -90,14 +100,18 @@ class albedo_Gui(QWidget, albedo_ui):
             self.label.setText(_translate("Form", "The image after highlight:"))
 
     def buffing_click(self):
-        if self.img_add == " ":
-            print("you haven't choose a picture yet")
+        if self.img_add == "":
+            self.ui = error_Gui()
+            _translate = QtCore.QCoreApplication.translate
+            self.ui.L_text1.setText(_translate("Form", "Please upload the original image first"))
+            self.ui.show()
         else:
             al_out3 = self.img_al_out3
             n_out2 = self.img_n_out2
             light_out = self.img_light_out
             mask = self.img_mask
             albedo = albedo_bilateral(al_out3, n_out2, light_out, mask, 40)
+            self.templete_albedo = albedo
             image = QtGui.QPixmap(
                 os.path.join(PROJECT_DIR, 'data/buffing.png')).scaled(
                 384, 384, aspectRatioMode=Qt.KeepAspectRatio)
@@ -107,8 +121,11 @@ class albedo_Gui(QWidget, albedo_ui):
             self.label.setText(_translate("Form", "The image after buffing:"))
 
     def buffing_slide(self):
-        if self.img_add == " ":
-            print("you haven't choose a picture yet")
+        if self.img_add == "":
+            self.ui = error_Gui()
+            _translate = QtCore.QCoreApplication.translate
+            self.ui.L_text1.setText(_translate("Form", "Please upload the original image first"))
+            self.ui.show()
         else:
             sigmaColor = self.sender().value()
             al_out3 = self.img_al_out3
@@ -116,6 +133,7 @@ class albedo_Gui(QWidget, albedo_ui):
             light_out = self.img_light_out
             mask = self.img_mask
             albedo = albedo_bilateral(al_out3, n_out2, light_out, mask, sigmaColor)
+            self.templete_albedo = albedo
             image = QtGui.QPixmap(
                 os.path.join(PROJECT_DIR, 'data/buffing.png')).scaled(
                 384, 384, aspectRatioMode=Qt.KeepAspectRatio)
@@ -125,14 +143,18 @@ class albedo_Gui(QWidget, albedo_ui):
             self.label.setText(_translate("Form", "The image after buffing:"))
 
     def sharpening_click(self):
-        if self.img_add == " ":
-            print("you haven't choose a picture yet")
+        if self.img_add == "":
+            self.ui = error_Gui()
+            _translate = QtCore.QCoreApplication.translate
+            self.ui.L_text1.setText(_translate("Form", "Please upload the original image first"))
+            self.ui.show()
         else:
             al_out3 = self.img_al_out3
             n_out2 = self.img_n_out2
             light_out = self.img_light_out
             mask = self.img_mask
-            unsharp_masking(al_out3, 1, n_out2, light_out, mask)
+            albedo = unsharp_masking(al_out3, 1, n_out2, light_out, mask)
+            self.templete_albedo = albedo
             image = QtGui.QPixmap(
                 os.path.join(PROJECT_DIR, 'data/sharpening.png')).scaled(
                 384, 384, aspectRatioMode=Qt.KeepAspectRatio)
@@ -142,15 +164,19 @@ class albedo_Gui(QWidget, albedo_ui):
             self.label.setText(_translate("Form", "The image after sharpening:"))
 
     def sharpening_slide(self):
-        if self.img_add == " ":
-            print("you haven't choose a picture yet")
+        if self.img_add == "":
+            self.ui = error_Gui()
+            _translate = QtCore.QCoreApplication.translate
+            self.ui.L_text1.setText(_translate("Form", "Please upload the original image first"))
+            self.ui.show()
         else:
             amount = self.sender().value()
             al_out3 = self.img_al_out3
             n_out2 = self.img_n_out2
             light_out = self.img_light_out
             mask = self.img_mask
-            unsharp_masking(al_out3, amount, n_out2, light_out, mask)
+            albedo = unsharp_masking(al_out3, amount, n_out2, light_out, mask)
+            self.templete_albedo = albedo
             image = QtGui.QPixmap(
                 os.path.join(PROJECT_DIR, 'data/sharpening.png')).scaled(
                 384, 384, aspectRatioMode=Qt.KeepAspectRatio)
@@ -160,39 +186,58 @@ class albedo_Gui(QWidget, albedo_ui):
             self.label.setText(_translate("Form", "The image after sharpening:"))
 
     def reference_click(self):
-        al_out3 = self.img_al_out3
-        n_out2 = self.img_n_out2
-        light_out = self.img_light_out
-        mask = self.img_mask
-        histogram_matching(al_out3, n_out2, light_out, self.img2_add, mask)
-
-        image2 = QtGui.QPixmap(
-            os.path.join(PROJECT_DIR, 'data/matching.png')).scaled(
-            384, 384, aspectRatioMode=Qt.KeepAspectRatio)
-        self.L_ShowAfter.setScaledContents(True)
-        self.L_ShowAfter.setPixmap(image2)
-        _translate = QtCore.QCoreApplication.translate
-        self.label.setText(_translate("Form", "The image after matching:"))
+        if self.img_add == "":
+            self.ui = error_Gui()
+            _translate = QtCore.QCoreApplication.translate
+            self.ui.L_text1.setText(_translate("Form", "Please upload the original image first"))
+            self.ui.show()
+        elif self.img2_add == "":
+            self.ui = error_Gui()
+            self.ui.show()
+        else:
+            al_out3 = self.img_al_out3
+            n_out2 = self.img_n_out2
+            light_out = self.img_light_out
+            mask = self.img_mask
+            albedo = histogram_matching(al_out3, n_out2, light_out, self.img2_add, mask)
+            self.templete_albedo = albedo
+            image2 = QtGui.QPixmap(
+                os.path.join(PROJECT_DIR, 'data/matching.png')).scaled(
+                384, 384, aspectRatioMode=Qt.KeepAspectRatio)
+            self.L_ShowAfter.setScaledContents(True)
+            self.L_ShowAfter.setPixmap(image2)
+            _translate = QtCore.QCoreApplication.translate
+            self.label.setText(_translate("Form", "The image after matching:"))
 
     def lighting_click(self):
-        # print(self.img2_add)
-        # if self.img2_add == "":
-        #     self.ui = lighting_Gui()
-        #     self.ui.show()
-        # else:
-        imgName = self.img2_add
-        n_out2 = self.img_n_out2
-        al_out3 = self.img_al_out3
-        mask = self.img_mask
-        shading_alter(imgName, n_out2, al_out3, mask)
+        if self.img_add == "":
+            self.ui = error_Gui()
+            _translate = QtCore.QCoreApplication.translate
+            self.ui.L_text1.setText(_translate("Form", "Please upload the original image first"))
+            self.ui.show()
+        elif self.img2_add == "":
+            self.ui = error_Gui()
+            self.ui.show()
+        else:
+            imgName = self.img2_add
+            n_out2 = self.img_n_out2
+            al_out3 = self.img_al_out3
+            mask = self.img_mask
+            shading = shading_alter(imgName, n_out2, al_out3, mask)
+            self.img_light_out = shading
+            image2 = QtGui.QPixmap(
+                os.path.join(PROJECT_DIR, 'data/f2f.png')).scaled(
+                384, 384, aspectRatioMode=Qt.KeepAspectRatio)
+            self.L_ShowAfter.setScaledContents(True)
+            self.L_ShowAfter.setPixmap(image2)
+            _translate = QtCore.QCoreApplication.translate
+            self.label.setText(_translate("Form", "The image after relighting:"))
 
-        image2 = QtGui.QPixmap(
-            os.path.join(PROJECT_DIR, 'data/f2f.png')).scaled(
-            384, 384, aspectRatioMode=Qt.KeepAspectRatio)
-        self.L_ShowAfter.setScaledContents(True)
-        self.L_ShowAfter.setPixmap(image2)
-        _translate = QtCore.QCoreApplication.translate
-        self.label.setText(_translate("Form", "The image after relighting:"))
+    def save_click(self):
+        self.img_al_out3 = self.templete_albedo
+        self.ui = save_Gui()
+        self.ui.show()
+
 
     # def returnHP_click(self):
     #     self.ui = HomePage_Gui()
@@ -200,23 +245,30 @@ class albedo_Gui(QWidget, albedo_ui):
     #     self.close()
 
 
-class error_Gui(QWidget, error_ui):
+class error_Gui(QWidget, error_Gui):
     def __init__(self):
-        super(error_ui, self).__init__()
+        super(error_Gui, self).__init__()
         self.ui = None
         self.setupUi(self)
-        image = QtGui.QPixmap("D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/data/error.png").scaled(384,
-                                                                                                                  384,
-                                                                                                                  aspectRatioMode=Qt.KeepAspectRatio)
+        image = QtGui.QPixmap(
+            os.path.join(PROJECT_DIR, 'data/error.png')).scaled(
+            384, 384, aspectRatioMode=Qt.KeepAspectRatio)
         self.L_image.setScaledContents(True)
         self.L_image.setPixmap(image)
-        _translate = QtCore.QCoreApplication.translate
-        self.L_text1.setText(_translate("Form", "Please upload the reference image first"))
 
     def OK_clicked(self):
         self.close()
 
 
+class save_Gui(QWidget, save_Gui):
+    def __init__(self):
+        super(save_Gui, self).__init__()
+        self.ui = None
+        self.setupUi(self)
+        self.retranslateUi(self)
+
+    def close_clicked(self):
+        self.close()
 # class HomePage_Gui(QWidget, homePage_ui):
 #     def __init__(self):
 #         super(HomePage_Gui, self).__init__()
@@ -307,7 +359,7 @@ class error_Gui(QWidget, error_ui):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    # interface = HomePage_Gui()
+    # interface = error_Gui()
     interface = albedo_Gui()
     interface.show()
     sys.exit(app.exec_())

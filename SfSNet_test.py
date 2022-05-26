@@ -244,5 +244,5 @@ if __name__ == '__main__':
     d_path = os.path.join(PROJECT_DIR, 'data')
     if not os.path.exists(d_path):
         os.mkdir(d_path)
-    _decomposition("D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/1.png_face.png")
+    _decomposition("D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/13.png_face.png")
     # _decomposition()

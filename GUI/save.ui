@@ -1,49 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Error</class>
- <widget class="QWidget" name="Error">
+ <class>Save</class>
+ <widget class="QWidget" name="Save">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>512</width>
+    <width>432</width>
     <height>236</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Error</string>
+   <string>Save</string>
   </property>
   <widget class="QLabel" name="L_text1">
    <property name="geometry">
     <rect>
-     <x>130</x>
+     <x>140</x>
      <y>90</y>
-     <width>361</width>
+     <width>211</width>
      <height>16</height>
     </rect>
    </property>
    <property name="text">
-    <string>Please upload the reference image first</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="L_image">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>50</y>
-     <width>91</width>
-     <height>91</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
+    <string>Save successfully</string>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
-     <x>210</x>
-     <y>160</y>
+     <x>170</x>
+     <y>140</y>
      <width>81</width>
      <height>31</height>
     </rect>
@@ -58,21 +45,21 @@
   <connection>
    <sender>pushButton</sender>
    <signal>clicked()</signal>
-   <receiver>Error</receiver>
-   <slot>OK_clicked()</slot>
+   <receiver>Save</receiver>
+   <slot>close_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>216</x>
-     <y>183</y>
+     <x>225</x>
+     <y>158</y>
     </hint>
     <hint type="destinationlabel">
-     <x>268</x>
-     <y>192</y>
+     <x>294</x>
+     <y>160</y>
     </hint>
    </hints>
   </connection>
  </connections>
  <slots>
-  <slot>OK_clicked()</slot>
+  <slot>close_clicked()</slot>
  </slots>
 </ui>
