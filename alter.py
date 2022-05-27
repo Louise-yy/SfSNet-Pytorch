@@ -46,7 +46,7 @@ def albedo_highlight(al_out3, n_out2, light_out, mask, weight, gamma):
     # cv2.waitKey(0)
 
 
-def albedo_bilateral(al_out3, n_out2, light_out, mask, sigmaColor):
+def albedo_bilateral(al_out3, n_out2, light_out, mask, sigma):
     """
     @brief Adding buffing to the input image
 
@@ -58,10 +58,8 @@ def albedo_bilateral(al_out3, n_out2, light_out, mask, sigmaColor):
 
     @return bilateral_filter_img Processed albedo
     """
-    # sigmaColor：Sigma_color较大，则在邻域中的像素值相差较大的像素点也会用来平均。
-    # sigmaSpace：Sigma_space较大，则虽然离得较远，但是，只要值相近，就会互相影响
     al_out3 = convert(al_out3)
-    bilateral_filter_img = cv2.bilateralFilter(al_out3, 9, sigmaColor, 40)  # 9 75 75
+    bilateral_filter_img = cv2.bilateralFilter(al_out3, 7, sigma, sigma)  # 9 75 75
 
     bilateral_filter_img = np.float32(bilateral_filter_img) / 255.0
     bilateral_filter_img = cv2.cvtColor(bilateral_filter_img, cv2.COLOR_BGR2RGB)
@@ -127,12 +125,9 @@ def histogram_matching(img, normal, lighting, ref, mask):
         hist_ref, _ = np.histogram(al_out3[:, :, i], 256)
         cdf_img = np.cumsum(hist_img)  # get the accumulative histogram
         cdf_ref = np.cumsum(hist_ref)
-        # print(cdf_ref)
         for j in range(256):
             tmp = abs(cdf_img[j] - cdf_ref)
-            # print(tmp)
             tmp = tmp.tolist()
-            # print(tmp)
             idx = tmp.index(min(tmp))  # find the smallest number in tmp, get the index of this number
             out[:, :, i][img[:, :, i] == j] = idx
 
@@ -220,25 +215,25 @@ def shading_alter(ref, normal, albedo, mask):
 #     cv2.waitKey(0)
 
 
-# if __name__ == '__main__':
-#     n_out2, al_out2, light_out, al_out3, n_out3, mask = _decomposition(
-#         "D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/11.png_face.png")
-#     img = cv2.imread("D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/11.png_face.png")
-#     # img = "D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/4.png_face.png"
-#     ref = "D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/9.png_face.png"
-#     img_ref = cv2.imread("D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/9.png_face.png")
-#
-#     # albedo_highlight(al_out3, n_out2, light_out, mask, 1.25, 1)  # 1.25 1
-#     # albedo_bilateral(al_out3, n_out2, light_out, mask, 40)
-#     # unsharp_masking(al_out3, 3, n_out2, light_out, mask)
-#     # histogram_matching(al_out3, n_out2, light_out, ref, mask)
-#     # shading_alter(ref, n_out2, al_out3, mask)
-#     # cv2.imshow("img", img)
-#     # cv2.imshow("ref", img_ref)
-#     # cv2.imshow("albedo", al_out3)
-#     # cv2.waitKey(0)
-#
-#     # change_albedo()
-#     # albedo_sharp(al_out3, n_out2, light_out)
-#     # cv2.imshow("ori", img)
-#     # cv2.waitKey(0)
+if __name__ == '__main__':
+    n_out2, al_out2, light_out, al_out3, n_out3, mask = _decomposition(
+        "D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/11.png_face.png")
+    img = cv2.imread("D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/11.png_face.png")
+    # img = "D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/4.png_face.png"
+    ref = "D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/9.png_face.png"
+    img_ref = cv2.imread("D:/AoriginallyD/Cardiff-year3/final_project/SfSNet-Pytorch/Images/9.png_face.png")
+
+    # albedo_highlight(al_out3, n_out2, light_out, mask, 1.3, 10)  # 1.25 1
+    # albedo_bilateral(al_out3, n_out2, light_out, mask, 70)
+    unsharp_masking(al_out3, 1, n_out2, light_out, mask)
+    # histogram_matching(al_out3, n_out2, light_out, ref, mask)
+    # shading_alter(ref, n_out2, al_out3, mask)
+    cv2.imshow("img", img)
+    # cv2.imshow("ref", img_ref)
+    # cv2.imshow("albedo", al_out3)
+    cv2.waitKey(0)
+
+    # change_albedo()
+    # albedo_sharp(al_out3, n_out2, light_out)
+    # cv2.imshow("ori", img)
+    # cv2.waitKey(0)

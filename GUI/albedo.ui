@@ -240,7 +240,7 @@
      <number>10</number>
     </property>
     <property name="maximum">
-     <number>75</number>
+     <number>100</number>
     </property>
     <property name="singleStep">
      <number>1</number>
@@ -288,7 +288,7 @@
      <number>0</number>
     </property>
     <property name="maximum">
-     <number>5</number>
+     <number>15</number>
     </property>
     <property name="singleStep">
      <number>1</number>

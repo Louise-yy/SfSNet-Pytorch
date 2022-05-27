@@ -4,16 +4,19 @@ import sys
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5 import QtGui, QtCore
-from albedo import Ui_Form as albedo_ui
+from GUI.albedo import Ui_Form as albedo_ui
 from config import PROJECT_DIR
-from error import Ui_Error as error_Gui
-from save import Ui_Save as save_Gui
+from GUI.error import Ui_Error as error_Gui
+from GUI.save import Ui_Save as save_Gui
 
 from SfSNet_test import _decomposition
 from alter import albedo_highlight, albedo_bilateral, histogram_matching, unsharp_masking, shading_alter
 
 
 class albedo_Gui(QWidget, albedo_ui):
+    """
+    GUI operation of the main page
+    """
     img_add = ""
     img2_add = ""
     img_al_out3 = None
@@ -29,8 +32,10 @@ class albedo_Gui(QWidget, albedo_ui):
         self.setupUi(self)
         self.retranslateUi(self)
 
+    """
+    get the original image and decompose it
+    """
     def getImage_click(self):
-        # Open the file(*.jpg *.gif *.png *.jpeg) from D:\AoriginallyD\Cardiff-year3\final_project\SfSNet-Pytorch\Images
         imgName, imgType = QFileDialog.getOpenFileName(self, 'Open file', '.',
                                                        'Image files (*.jpg *.png)')
         self.img_add = imgName
@@ -46,6 +51,9 @@ class albedo_Gui(QWidget, albedo_ui):
         self.templete_light = light_out
         self.img_mask = mask
 
+    """
+    get the reference image
+    """
     def getImage2_click(self):
         # Open the file(*.jpg *.gif *.png *.jpeg) from D:\AoriginallyD\Cardiff-year3\final_project\SfSNet-Pytorch\Images
         imgName, imgType = QFileDialog.getOpenFileName(self, 'Open file', '.',
@@ -55,8 +63,11 @@ class albedo_Gui(QWidget, albedo_ui):
         self.L_ShowPic_2.setScaledContents(True)
         self.L_ShowPic_2.setPixmap(image)
 
+    """
+    add highlight(button)
+    """
     def highlight_click(self):
-        if self.img_add == "":
+        if self.img_add == "":  # Determine if there is an input original image
             self.ui = error_Gui()
             _translate = QtCore.QCoreApplication.translate
             self.ui.L_text1.setText(_translate("Form", "Please upload the original image first"))
@@ -76,6 +87,9 @@ class albedo_Gui(QWidget, albedo_ui):
             _translate = QtCore.QCoreApplication.translate
             self.label.setText(_translate("Form", "The image after highlight:"))
 
+    """
+    add highlight(slider)
+    """
     def highlight_slide(self):
         if self.img_add == "":
             self.ui = error_Gui()
@@ -100,6 +114,9 @@ class albedo_Gui(QWidget, albedo_ui):
             _translate = QtCore.QCoreApplication.translate
             self.label.setText(_translate("Form", "The image after highlight:"))
 
+    """
+    add buffing effect(button)
+    """
     def buffing_click(self):
         if self.img_add == "":
             self.ui = error_Gui()
@@ -121,6 +138,9 @@ class albedo_Gui(QWidget, albedo_ui):
             _translate = QtCore.QCoreApplication.translate
             self.label.setText(_translate("Form", "The image after buffing:"))
 
+    """
+    add buffing effect(slider)
+    """
     def buffing_slide(self):
         if self.img_add == "":
             self.ui = error_Gui()
@@ -143,6 +163,9 @@ class albedo_Gui(QWidget, albedo_ui):
             _translate = QtCore.QCoreApplication.translate
             self.label.setText(_translate("Form", "The image after buffing:"))
 
+    """
+    add sharpening effect(button)
+    """
     def sharpening_click(self):
         if self.img_add == "":
             self.ui = error_Gui()
@@ -164,6 +187,9 @@ class albedo_Gui(QWidget, albedo_ui):
             _translate = QtCore.QCoreApplication.translate
             self.label.setText(_translate("Form", "The image after sharpening:"))
 
+    """
+    add sharpening effect(slider)
+    """
     def sharpening_slide(self):
         if self.img_add == "":
             self.ui = error_Gui()
@@ -172,6 +198,7 @@ class albedo_Gui(QWidget, albedo_ui):
             self.ui.show()
         else:
             amount = self.sender().value()
+            amount = amount/10
             al_out3 = self.img_al_out3
             n_out2 = self.img_n_out2
             light_out = self.img_light_out
@@ -186,6 +213,9 @@ class albedo_Gui(QWidget, albedo_ui):
             _translate = QtCore.QCoreApplication.translate
             self.label.setText(_translate("Form", "The image after sharpening:"))
 
+    """
+    change the albedo by reference
+    """
     def reference_click(self):
         if self.img_add == "":
             self.ui = error_Gui()
@@ -210,6 +240,9 @@ class albedo_Gui(QWidget, albedo_ui):
             _translate = QtCore.QCoreApplication.translate
             self.label.setText(_translate("Form", "The image after matching:"))
 
+    """
+    change the lighting by reference
+    """
     def lighting_click(self):
         if self.img_add == "":
             self.ui = error_Gui()
@@ -234,6 +267,9 @@ class albedo_Gui(QWidget, albedo_ui):
             _translate = QtCore.QCoreApplication.translate
             self.label.setText(_translate("Form", "The image after relighting:"))
 
+    """
+    save the status of the display image
+    """
     def save_click(self):
         self.img_al_out3 = self.templete_albedo
         self.img_light_out = self.templete_light
@@ -242,6 +278,9 @@ class albedo_Gui(QWidget, albedo_ui):
 
 
 class error_Gui(QWidget, error_Gui):
+    """
+    GUI of the error page
+    """
     def __init__(self):
         super(error_Gui, self).__init__()
         self.ui = None
@@ -257,6 +296,9 @@ class error_Gui(QWidget, error_Gui):
 
 
 class save_Gui(QWidget, save_Gui):
+    """
+    GUI of the save successfully page
+    """
     def __init__(self):
         super(save_Gui, self).__init__()
         self.ui = None
